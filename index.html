@@ -3,168 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>akrgood</title>
+    <title>akrgood - Портфолио</title>
     <style>
-        /* Убираем отступы и делаем черный фон */
+        /* --- БАЗОВЫЕ НАСТРОЙКИ И 3D --- */
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden;
-            font-family: 'Courier New', Courier, monospace;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #000; font-family: 'Arial', sans-serif;
+            color: #ffffff; overflow: hidden; perspective: 1000px; 
         }
 
-        /* Настройки для холста Матрицы (он будет на самом заднем плане) */
-        canvas {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
         }
 
-        /* Контейнер для твоей карточки */
-        .container {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            color: #0F0; /* Неоновый зеленый */
-            text-shadow: 0 0 5px #0F0;
+        .content-wrapper {
+            position: relative; z-index: 10; height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box;
+            transform: rotateX(5deg) rotateY(-5deg);
         }
 
-        /* Сама темная карточка */
-        .card {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #0F0;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        /* Место под аватарку */
+        /* --- ПРОФИЛЬ И КНОПКИ --- */
+        .avatar-container { text-align: center; margin-bottom: 30px; }
         .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 2px solid #0F0;
-            object-fit: cover;
-            margin-bottom: 20px;
-            background-color: #111; /* Цвет пустой области, пока нет картинки */
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 0 15px #0F0;
+            width: 160px; height: 160px; border-radius: 15px; 
+            border: 4px solid #cc0000; background-color: #111; object-fit: cover;
+            box-shadow: 20px 20px 60px #030000, -20px -20px 60px #080000, inset 5px 5px 10px rgba(255,0,0,0.3);
+            transition: transform 0.5s ease;
         }
+        .avatar:hover { transform: scale(1.1) rotateY(10deg); }
 
         h1 {
-            margin: 0 0 20px 0;
-            font-size: 2.5em;
-            letter-spacing: 2px;
+            margin: 20px 0 10px 0; font-size: 2.8em; text-transform: uppercase;
+            letter-spacing: 5px; text-shadow: 2px 2px 0px #990000, 5px 5px 15px rgba(255, 0, 0, 0.7);
         }
 
-        /* Кнопки ссылок */
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .section-title {
+            width: 100%; text-align: center; font-size: 1.4em; color: #cc0000;
+            border-bottom: 2px solid #cc0000; padding-bottom: 8px; margin: 25px 0 20px 0;
+            text-transform: uppercase; letter-spacing: 3px;
         }
 
-        .links a {
-            text-decoration: none;
-            color: #000;
-            background-color: #0F0;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px #0F0;
+        .button-group { display: flex; gap: 20px; justify-content: center; width: 100%; flex-wrap: wrap; }
+        .btn {
+            display: inline-block; text-decoration: none; color: #ffffff;
+            background: rgba(10, 0, 0, 0.8); border: 2px solid #990000;
+            padding: 15px 35px; border-radius: 8px; font-weight: bold; font-size: 1.2em;
+            text-transform: uppercase; transition: all 0.3s ease; min-width: 140px;
+            text-align: center; backdrop-filter: blur(8px); transform-style: preserve-3d;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5), inset 2px 2px 5px rgba(255,0,0,0.2);
+        }
+        .btn:hover {
+            background: #cc0000; color: #000000; border-color: #ff3333;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9); transform: translateY(-5px) scale(1.05) rotateY(5deg);
         }
 
-        .links a:hover {
-            background-color: #000;
-            color: #0F0;
-            border: 1px solid #0F0;
-            box-shadow: 0 0 25px #0F0;
+        /* --- SPOTIFY ПЛЕЕР (КНОПКА И МОДАЛКА) --- */
+        .spotify-trigger {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;
+            background: rgba(10, 0, 0, 0.9); border: 2px solid #1DB954; color: #1DB954;
+            padding: 12px 30px; border-radius: 30px; font-weight: bold; font-size: 1.1em;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); transition: all 0.3s ease; backdrop-filter: blur(5px);
         }
+        .spotify-trigger:hover {
+            background: #1DB954; color: #000; box-shadow: 0 0 25px rgba(29, 185, 84, 0.8);
+            transform: translateX(-50%) translateY(-3px) scale(1.05);
+        }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 100;
+            display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            background: #111; padding: 25px; border-radius: 20px; border: 2px solid #1DB954;
+            box-shadow: 0 0 40px rgba(29, 185, 84, 0.4); position: relative; width: 90%; max-width: 400px;
+            transform: translateY(50px); transition: transform 0.3s ease;
+        }
+        .close-btn {
+            position: absolute; top: -15px; right: -15px; background: #1DB954; color: #000;
+            width: 35px; height: 35px; border-radius: 50%; font-size: 24px; font-weight: bold;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            box-shadow: 0 0 10px #1DB954; transition: all 0.2s;
+        }
+        .close-btn:hover { background: #fff; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <!-- Анимация Матрицы -->
-    <canvas id="matrix"></canvas>
+    <canvas id="psp-canvas"></canvas>
 
-    <!-- Основной контент -->
-    <div class="container">
-        <div class="card">
-            <!-- 
-                ВАЖНО: Закинь свою картинку в репозиторий на GitHub 
-                и замени 'placeholder.jpg' на точное название твоего файла (например, 'avatar.png') 
-            -->
-            <img src="avatar.png" alt="akrgood avatar" class="avatar">
-            
+    <div class="content-wrapper">
+        <div class="avatar-container">
+            <img src="avatar.png" alt="akrgood" class="avatar">
             <h1>akrgood</h1>
-            
-            <div class="links">
-                <a href="https://AKRGOOD.T.ME" target="_blank">Telegram</a>
-                <a href="https://www.tiktok.com/@MS4wLjABAAAA4SqJkcv9UJPP5HCm4uVSNOsWREn_nCuer8nkzhvhXXkIUmxNshJK0DerNUC-nih7" target="_blank">TikTok</a>
-            </div>
+        </div>
+
+        <div class="section-title" data-i18n="contact">Связь</div>
+        <div class="button-group">
+            <a href="https://AKRGGXD.T.ME" target="_blank" class="btn">Telegram</a>
+            <a href="https://www.tiktok.com/@MS4wLjABAAAA4SqJkcv9UJPP5HCm4uVSNOsWREn_nCuer8nkzhvhXXkIUmxNshJK0DerNUC-nih7" target="_blank" class="btn">TikTok</a>
+        </div>
+
+        <div class="section-title" data-i18n="projects">Проекты</div>
+        <div class="button-group">
+            <a href="github.html" class="btn">GitHub</a>
+            <a href="psp.html" class="btn">PSP</a>
         </div>
     </div>
 
-    <!-- Скрипт для создания эффекта падающих букв -->
+    <div class="spotify-trigger" id="openSpotify" data-i18n="spotifyBtn">
+        🎵 Слушать Spotify
+    </div>
+
+    <div class="modal-overlay" id="spotifyModal">
+        <div class="modal-content" id="spotifyContent">
+            <div class="close-btn" id="closeSpotify">×</div>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/6vTDj38czuDvZO3rokXlIA?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+
     <script>
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン';
-        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const nums = '0123456789';
-        const alphabet = katakana + latin + nums;
-
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-
-        const rainDrops = [];
-        for (let x = 0; x < columns; x++) {
-            rainDrops[x] = 1;
-        }
-
-        const draw = () => {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < rainDrops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
+        // --- 1. МУЛЬТИЯЗЫЧНОСТЬ ---
+        const dict = {
+            en: {
+                contact: "Contact",
+                projects: "Projects",
+                spotifyBtn: "🎵 Listen on Spotify"
+            },
+            ru: {
+                contact: "Связь",
+                projects: "Проекты",
+                spotifyBtn: "🎵 Слушать Spotify"
+            },
+            uk: {
+                contact: "Зв'язок",
+                projects: "Проєкти",
+                spotifyBtn: "🎵 Слухати Spotify"
             }
         };
 
-        setInterval(draw, 30);
+        // Читаем язык браузера
+        const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
+        let currentLang = 'en'; // По умолчанию всем английский
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        if (userLang.includes('uk')) {
+            currentLang = 'uk'; // Если украинский — ставим украинский
+        } else if (userLang.includes('ru') || userLang.includes('be')) {
+            currentLang = 'ru'; // Если русский или белорусский — ставим русский
+        }
+
+        // Подставляем нужный текст
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if(dict[currentLang][key]) {
+                el.innerText = dict[currentLang][key];
+            }
         });
+
+        // --- 2. СКРИПТ ДЛЯ ВОЛН PSP ---
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            let bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+            bgGradient.addColorStop(0, '#1a0000'); bgGradient.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGradient; ctx.fillRect(0, 0, width, height);
+            
+            drawPSPWave(height * 0.75, 120, 0.001, 0.8, 0, 'rgba(150, 0, 0, 0)', 'rgba(200, 0, 0, 0.1)');
+            drawPSPWave(height * 0.70, 90, 0.0015, 1.2, 2, 'rgba(255, 0, 0, 0.05)', 'rgba(255, 0, 0, 0.2)');
+            
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = height * 0.65 + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(255, 0, 0, 0.6)'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+            ctx.shadowBlur = 15; ctx.shadowColor = 'rgba(255, 0, 0, 0.8)'; ctx.stroke(); ctx.shadowBlur = 0;
+
+            time += 0.005; requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 3. СКРИПТ ДЛЯ МОДАЛЬНОГО ОКНА SPOTIFY ---
+        const modal = document.getElementById('spotifyModal');
+        const btn = document.getElementById('openSpotify');
+        const closeBtn = document.getElementById('closeSpotify');
+        const modalContent = document.getElementById('spotifyContent');
+
+        btn.onclick = () => {
+            modal.style.display = "flex";
+            setTimeout(() => { modal.style.opacity = "1"; modalContent.style.transform = "translateY(0)"; }, 10);
+        }
+        closeBtn.onclick = () => {
+            modal.style.opacity = "0"; modalContent.style.transform = "translateY(50px)";
+            setTimeout(() => { modal.style.display = "none"; }, 300);
+        }
+        window.onclick = (e) => {
+            if (e.target == modal) {
+                modal.style.opacity = "0"; modalContent.style.transform = "translateY(50px)";
+                setTimeout(() => { modal.style.display = "none"; }, 300);
+            }
+        }
     </script>
 </body>
 </html>
