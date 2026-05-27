@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>akrgood - Bio</title>
+    <style>
+        /* Убираем отступы и делаем черный фон */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Настройки для холста Матрицы (он будет на самом заднем плане) */
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Контейнер для твоей карточки */
+        .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #0F0; /* Неоновый зеленый */
+            text-shadow: 0 0 5px #0F0;
+        }
+
+        /* Сама темная карточка */
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #0F0;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Место под аватарку */
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid #0F0;
+            object-fit: cover;
+            margin-bottom: 20px;
+            background-color: #111; /* Цвет пустой области, пока нет картинки */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 15px #0F0;
+        }
+
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+
+        /* Кнопки ссылок */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: #000;
+            background-color: #0F0;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #0F0;
+        }
+
+        .links a:hover {
+            background-color: #000;
+            color: #0F0;
+            border: 1px solid #0F0;
+            box-shadow: 0 0 25px #0F0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Анимация Матрицы -->
+    <canvas id="matrix"></canvas>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <div class="card">
+            <!-- 
+                ВАЖНО: Закинь свою картинку в репозиторий на GitHub 
+                и замени 'placeholder.jpg' на точное название твоего файла (например, 'avatar.png') 
+            -->
+            <img src="avatar.png" alt="akrgood avatar" class="avatar">
+            
+            <h1>akrgood</h1>
+            
+            <div class="links">
+                <a href="https://AKRGOOD.T.ME" target="_blank">Telegram</a>
+                <a href="https://tiktok.com/@аки" target="_blank">TikTok</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипт для создания эффекта падающих букв -->
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
