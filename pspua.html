@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSP_UA - Переклади ігор</title>
+    <style>
+        /* --- БАЗОВЫЕ НАСТРОЙКИ --- */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0a0a0a; font-family: 'Arial', sans-serif;
+            color: #ffffff; overflow-x: hidden;
+        }
+
+        /* --- ХОЛСТ С СЕРЕБРЯНЫМИ ВОЛНАМИ --- */
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .content-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 30px 20px;
+        }
+
+        /* --- ШАПКА (ЗАГОЛОВОК) --- */
+        .header-title {
+            font-size: 3.5em; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 8px; margin-bottom: 40px; margin-top: 20px;
+            /* Хромовый эффект текста */
+            background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 50%, #505050 51%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+        }
+
+        /* --- СЕТКА ИГР (6x3) --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px; /* Ограничиваем максимальную ширину */
+            margin-bottom: 50px;
+        }
+
+        /* --- КАРТОЧКА ПРОЕКТА (ЯЧЕЙКА) --- */
+        .grid-item {
+            position: relative;
+            aspect-ratio: 1 / 1; /* Делает ячейки идеальными квадратами */
+            background: rgba(30, 30, 30, 0.6);
+            border: 2px solid #555;
+            border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            text-decoration: none; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Крестик для пустой ячейки (Заглушка) */
+        .grid-item::before {
+            content: '✖';
+            position: absolute;
+            font-size: 3em;
+            color: #444;
+            z-index: 0;
+            transition: color 0.3s ease;
+        }
+
+        /* Стили для вставленной картинки */
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Картинка заполнит ячейку без искажений */
+            position: relative;
+            z-index: 1; /* Перекрывает крестик */
+        }
+
+        /* Эффект наведения на ячейку */
+        .grid-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: #ffffff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+            z-index: 2;
+        }
+        .grid-item:hover::before {
+            color: #888; /* Крестик чуть светлеет при наведении */
+        }
+
+        /* --- ПОДВАЛ (ФУТЕР) --- */
+        .footer {
+            margin-top: auto; /* Прижимаем к низу */
+            padding-top: 30px;
+            font-size: 1.1em;
+            color: #888;
+            letter-spacing: 2px;
+            font-family: monospace;
+        }
+
+        /* --- АДАПТИВНОСТЬ ПОД ТЕЛЕФОНЫ И ПЛАНШЕТЫ --- */
+        @media (max-width: 992px) {
+            .grid-container { grid-template-columns: repeat(4, 1fr); } /* 4 колонки */
+            .header-title { font-size: 2.8em; }
+        }
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: repeat(3, 1fr); gap: 15px;} /* 3 колонки */
+            .header-title { font-size: 2.2em; }
+        }
+        @media (max-width: 480px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px;} /* 2 колонки для узких экранов */
+            .header-title { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="content-wrapper">
+        
+        <div class="header-title">PSP_UA</div>
+
+        <div class="grid-container">
+            <a href="game1.html" class="grid-item">
+                <img src="placeholder.jpg" alt="Game 1">
+            </a>
+
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+        </div>
+
+        <div class="footer">
+            (sklad.akrgooda 2026)
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            // Серебряно-черный фон
+            let bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+            bgGradient.addColorStop(0, '#1c1c1c'); 
+            bgGradient.addColorStop(1, '#050505');
+            ctx.fillStyle = bgGradient; ctx.fillRect(0, 0, width, height);
+            
+            // Центрирование волн (чуть ниже центра, чтобы текст и сетка лучше читались)
+            const wave1Y = height * 0.65;
+            const wave2Y = height * 0.60;
+            const neonWaveY = height * 0.55;
+            
+            // Залитые серебряные волны
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(150, 150, 150, 0)', 'rgba(200, 200, 200, 0.08)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.15)');
+            
+            // Яркая хромовая кромка
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; 
+            ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.shadowBlur = 15; ctx.shadowColor = 'rgba(255, 255, 255, 0.6)'; 
+            ctx.stroke(); ctx.shadowBlur = 0;
+
+            time += 0.005; requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
