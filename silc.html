@@ -28,7 +28,7 @@
 
         /* --- ЛОГОТИП ИГРЫ (НАВЕРХУ) --- */
         .game-logo {
-            max-width: 400px; /* Размер логотипа */
+            max-width: 400px; 
             width: 100%;
             height: auto;
             margin-bottom: 30px;
@@ -48,11 +48,12 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(8px);
             gap: 40px;
+            margin-bottom: 30px; /* Отступ до блока со скриншотами */
         }
 
         /* --- ОБЛОЖКА ИГРЫ (СЛЕВА) --- */
         .cover-box {
-            flex: 0 0 300px; /* Жесткая ширина обложки на ПК */
+            flex: 0 0 300px; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -166,10 +167,57 @@
             transform: translateY(-3px);
         }
 
-        /* Специфичные цвета для кнопок при наведении */
         .dl-btn.gdrive:hover { background: #34a853; border-color: #34a853; color: white; }
         .dl-btn.dropbox:hover { background: #0061ff; border-color: #0061ff; color: white; }
         .dl-btn.mediafire:hover { background: #0070f0; border-color: #0070f0; color: white; }
+
+        /* --- СЕКЦИЯ СКРИНШОТОВ --- */
+        .screenshots-panel {
+            background: rgba(20, 20, 20, 0.75);
+            border: 2px solid #555;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+        }
+
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px solid #444;
+            padding-bottom: 15px;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; /* Задает правильные пропорции экрана PSP */
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #777;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .screenshots-grid img:hover {
+            transform: scale(1.05);
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            z-index: 2;
+            position: relative;
+        }
 
         /* Кнопка "Назад" */
         .back-btn {
@@ -190,7 +238,7 @@
 
         /* --- АДАПТИВНОСТЬ ПОД ТЕЛЕФОНЫ --- */
         @media (max-width: 768px) {
-            .content-panel {
+            .content-panel, .screenshots-panel {
                 flex-direction: column;
                 align-items: center;
                 gap: 20px;
@@ -223,6 +271,7 @@
 
         <img src="silc-logo.png" alt="Seen in Liberty City Logo" class="game-logo">
 
+        <!-- ОСНОВНАЯ ПАНЕЛЬ С ИНФОЙ -->
         <div class="content-panel">
             
             <div class="cover-box">
@@ -251,9 +300,23 @@
                         <a href="https://www.mediafire.com/file/mpiy5tcii7aa6ei/GTA_SILC_UA.iso/file" target="_blank" class="dl-btn mediafire">MediaFire</a>
                     </div>
                 </div>
-
             </div>
         </div>
+
+        <!-- ПАНЕЛЬ СО СКРИНШОТАМИ -->
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <!-- Вставь сюда названия своих картинок со скриншотами -->
+                <img src="silc1.png" alt="Скріншот 1">
+                <img src="silc2.png" alt="Скріншот 2">
+                <img src="silc3.png" alt="Скріншот 3">
+                <img src="silc4.png" alt="Скріншот 4">
+                <img src="silc5.png" alt="Скріншот 5">
+                <img src="silc6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -287,7 +350,6 @@
             bgGradient.addColorStop(1, '#050505');
             ctx.fillStyle = bgGradient; ctx.fillRect(0, 0, width, height);
             
-            // На страницах игр волны можно сделать чуть ниже, чтобы текст не сливался
             const wave1Y = height * 0.75;
             const wave2Y = height * 0.70;
             const neonWaveY = height * 0.65;
