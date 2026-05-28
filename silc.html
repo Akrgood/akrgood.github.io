@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seen in Liberty City (UA) - PSP_UA</title>
+    <style>
+        /* --- БАЗОВЫЕ НАСТРОЙКИ --- */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0a0a0a; font-family: 'Arial', sans-serif;
+            color: #ffffff; overflow-x: hidden;
+        }
+
+        /* --- ХОЛСТ С СЕРЕБРЯНЫМИ ВОЛНАМИ --- */
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+
+        /* --- ЛОГОТИП ИГРЫ (НАВЕРХУ) --- */
+        .game-logo {
+            max-width: 400px; /* Размер логотипа */
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+
+        /* --- ГЛАВНАЯ ПАНЕЛЬ С ИНФОЙ --- */
+        .content-panel {
+            display: flex;
+            background: rgba(20, 20, 20, 0.75);
+            border: 2px solid #555;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+        }
+
+        /* --- ОБЛОЖКА ИГРЫ (СЛЕВА) --- */
+        .cover-box {
+            flex: 0 0 300px; /* Жесткая ширина обложки на ПК */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-cover {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #777;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- ИНФОРМАЦИЯ (СПРАВА) --- */
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 50%, #505050 51%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-desc {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 25px;
+        }
+
+        /* --- СПИСОК ДОП. ИНФЫ И ССЫЛОК --- */
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+
+        .info-list li {
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+
+        .info-list li span {
+            color: #888;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .info-list a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .info-list a:hover {
+            color: #a0a0a0;
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        /* --- СЕКЦИЯ СКАЧИВАНИЯ --- */
+        .download-section {
+            margin-top: auto;
+            border-top: 2px solid #444;
+            padding-top: 25px;
+            text-align: center;
+        }
+
+        .download-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        /* Кнопки скачивания */
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(30, 30, 30, 0.8);
+            border: 2px solid #777;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .dl-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* Специфичные цвета для кнопок при наведении */
+        .dl-btn.gdrive:hover { background: #34a853; border-color: #34a853; color: white; }
+        .dl-btn.dropbox:hover { background: #0061ff; border-color: #0061ff; color: white; }
+        .dl-btn.mediafire:hover { background: #0070f0; border-color: #0070f0; color: white; }
+
+        /* Кнопка "Назад" */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 1px solid #555;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+        .back-btn:hover { color: #fff; border-color: #fff; }
+
+        /* --- АДАПТИВНОСТЬ ПОД ТЕЛЕФОНЫ --- */
+        @media (max-width: 768px) {
+            .content-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="silc-logo.png" alt="Seen in Liberty City Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="silc-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Seen in Liberty City</h1>
+                
+                <p class="game-desc">
+                    «Seen in Liberty City» тепер українською, переклали гру: akrgood та And @aom_mao. Ця модифікація переносить сюжетну лінію GTA 3 у зображення Ліберті-Сіті 1998 року, створене на основі GTA LCS — з усіма відповідними спрощеннями, але й деякими вдосконаленнями, а також із власним контентом від Barcode Studia, натхненним ранніми версіями GTA 3, пізнішими частинами серії GTA та матеріалами, які раніше планували включити в інші проекти Barcode Studia, але не зробили цього з різних причин. Дрібний злочинець Клод зазнає зради та отримує кулю від своєї дівчини Каталіни під час пограбування банку за межами Ліберті-Сіті. Збіг обставин допомагає йому втекти та отримати те, чого він прагне найбільше — помсту!
+                </p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальні розробники:</span> <a href="https://barcode-studia.ru/" target="_blank">Barcode Studia / Сайт</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/fnZYY4XP2-g?si=1NybIvrfda0TTpgT" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.t.me" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1eGWIIna_DbGI9eAR_j8rOnK0Eu2Cs4eR/view?usp=drive_link" target="_blank" class="dl-btn gdrive">Google Drive</a>
+                        <a href="https://www.dropbox.com/scl/fi/1fytugb8wnch95lz44p11/GTA-SILC-UA.iso?rlkey=85phabuxbjn7212pan3xj8t6p&st=zc05mxeh&dl=0" target="_blank" class="dl-btn dropbox">Dropbox</a>
+                        <a href="https://www.mediafire.com/file/mpiy5tcii7aa6ei/GTA_SILC_UA.iso/file" target="_blank" class="dl-btn mediafire">MediaFire</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            let bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+            bgGradient.addColorStop(0, '#1c1c1c'); 
+            bgGradient.addColorStop(1, '#050505');
+            ctx.fillStyle = bgGradient; ctx.fillRect(0, 0, width, height);
+            
+            // На страницах игр волны можно сделать чуть ниже, чтобы текст не сливался
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+            
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(150, 150, 150, 0)', 'rgba(200, 200, 200, 0.08)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.15)');
+            
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; 
+            ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.shadowBlur = 15; ctx.shadowColor = 'rgba(255, 255, 255, 0.6)'; 
+            ctx.stroke(); ctx.shadowBlur = 0;
+
+            time += 0.005; requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
