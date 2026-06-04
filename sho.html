@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Hill Origins (UA) - PSP_UA</title>
+    <style>
+        /* --- БАЗОВЫЕ НАСТРОЙКИ --- */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #050505; font-family: 'Arial', sans-serif;
+            color: #d3d3d3; overflow-x: hidden;
+        }
+
+        /* --- ЭКРАН ЗАГРУЗКИ (ПРЕЛОАДЕР) --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .order-symbol {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(200, 0, 0, 0.6));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        /* Затемнение для фона, чтобы волны и текст выделялись */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 5, 5, 0.75); /* Темно-ржавая пелена */
+            z-index: -1;
+        }
+
+        /* --- ХОЛСТ С КРАСНЫМИ ВОЛНАМИ --- */
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР --- */
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+
+        /* --- ЛОГОТИП ИГРЫ (НАВЕРХУ) --- */
+        .game-logo {
+            max-width: 450px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+        }
+
+        /* --- ГЛАВНАЯ ПАНЕЛЬ С ИНФОЙ --- */
+        .content-panel {
+            display: flex;
+            background: rgba(15, 5, 5, 0.85);
+            border: 2px solid #501010;
+            border-radius: 8px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(139, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-cover {
+            width: 100%;
+            border-radius: 5px;
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e0e0e0;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8), 0 0 15px rgba(150, 0, 0, 0.5);
+        }
+
+        .game-desc {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #b0b0b0;
+            margin-bottom: 25px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+
+        .info-list li {
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .info-list li span {
+            color: #888;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .info-list a {
+            color: #d3d3d3;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .info-list a:hover {
+            color: #ff3333;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.6);
+        }
+
+        /* --- СЕКЦИЯ СКАЧИВАНИЯ --- */
+        .download-section {
+            margin-top: auto;
+            border-top: 2px solid #501010;
+            padding-top: 25px;
+            text-align: center;
+        }
+
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e0e0e0;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(20, 5, 5, 0.9);
+            border: 1px solid #700000;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+        }
+
+        .dl-btn:hover {
+            background: #8b0000;
+            color: #fff;
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* --- СЕКЦИЯ СКРИНШОТОВ --- */
+        .screenshots-panel {
+            background: rgba(15, 5, 5, 0.85);
+            border: 2px solid #501010;
+            border-radius: 8px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(139, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px solid #501010;
+            padding-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #444;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .screenshots-grid img:hover {
+            transform: scale(1.05);
+            border-color: #8b0000;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+            z-index: 2;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 1px solid #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background: rgba(10,10,10,0.7);
+            transition: all 0.3s;
+        }
+        .back-btn:hover { color: #fff; border-color: #8b0000; background: rgba(50,0,0,0.8); }
+
+        /* --- АДАПТИВНОСТЬ ПОД ТЕЛЕФОНЫ --- */
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="order-symbol.png" alt="Order Logo" class="order-symbol">
+    </div>
+    
+    <div class="bg-overlay"></div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="sho-logo.png" alt="Silent Hill Origins Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="sho-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Silent Hill: Origins</h1>
+                
+                <p class="game-desc">
+                    Поверніться до витоків жаху. Тревіс Грейді, звичайний далекобійник, опиняється в туманному містечку Сайлент Хілл, рятуючи дівчинку з палаючого будинку. Тепер йому доведеться зіткнутися не лише з монстрами, але й із власними демонами минулого. Гра повністю перекладена українською мовою для максимального занурення в атмосферу жаху.
+                </p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальні розробники:</span> <a href="https://www.climaxstudios.com" target="_blank">Climax Studios / Сайт</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/aEhF3xceRBs?si=wKbNvN6p6IosaMLp" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.t.me" target="_blank">PSP_UA</a></li>
+                    <li><span>ПЕРЕКЛАД НА СКРІНШОТАХ НЕАКТУАЛЬНИЙ</span></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="#" target="_blank" class="dl-btn">???</a>
+                        <a href="#" target="_blank" class="dl-btn">СКОРО</a>
+                        <a href="#" target="_blank" class="dl-btn">???</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="sho-screen1.png" alt="Скріншот 1">
+                <img src="sho-screen2.png" alt="Скріншот 2">
+                <img src="sho-screen3.png" alt="Скріншот 3">
+                <img src="sho-screen4.png" alt="Скріншот 4">
+                <img src="sho-screen5.png" alt="Скріншот 5">
+                <img src="sho-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. ПРЕЛОАДЕР ---
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1000);
+        });
+
+        // --- 2. КРАСНЫЕ ВОЛНЫ ---
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            // Очищаем холст, чтобы фоновая картинка (PNG) просвечивалась
+            ctx.clearRect(0, 0, width, height);
+            
+            // Координаты волн
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+            
+            // Залитые КРАСНЫЕ волны
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(150, 0, 0, 0)', 'rgba(200, 0, 0, 0.2)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(255, 0, 0, 0.05)', 'rgba(255, 0, 0, 0.3)');
+            
+            // Неоновая красная кромка
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(255, 0, 0, 0.7)'; 
+            ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.shadowBlur = 15; ctx.shadowColor = 'rgba(255, 0, 0, 0.9)'; 
+            ctx.stroke(); ctx.shadowBlur = 0;
+
+            time += 0.005; requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
