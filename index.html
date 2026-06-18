@@ -1,15 +1,35 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>akrgood</title>
+    <meta name="description" content="Офіційна сторінка akrgood. Перекладач ігор, розробник модифікацій та креатор. Ігри українською для PSP та игры на русском для ПСП.">
+    <meta name="keywords" content="akrgood, psp_ua, psp_ru, переклад ігор, psp модифікації, ігри українською для psp, игры на русском для псп, ukrainian translation">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "akrgood",
+      "alternateName": "akrgood",
+      "url": "https://akrgood.github.io",
+      "image": "https://akrgood.github.io/avatar.png",
+      "description": "Креатор, розробник та перекладач відеоігор. Засновник проєкту sklad.akrgooda та власник спільнот PSP_UA (ігри українською для psp) та PSP_ru (игры на русском для псп).",
+      "sameAs": [
+        "https://AKRGGXD.T.ME",
+        "https://www.tiktok.com/@MS4wLjABAAAA4SqJkcv9UJPP5HCm4uVSNOsWREn_nCuer8nkzhvhXXkIUmxNshJK0DerNUC-nih7"
+      ]
+    }
+    </script>
+
     <style>
-        /* --- БАЗОВЫЕ НАСТРОЙКИ И 3D --- */
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #000; font-family: 'Arial', sans-serif;
-            color: #ffffff; overflow: hidden; perspective: 1000px; 
+            background-color: #050000; font-family: 'Arial', sans-serif;
+            color: #ffffff; overflow-x: hidden;
         }
 
         #psp-canvas {
@@ -18,76 +38,73 @@
         }
 
         .content-wrapper {
-            position: relative; z-index: 10; height: 100vh;
+            position: relative; z-index: 10;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box;
-            transform: rotateX(5deg) rotateY(-5deg);
+            width: 100%; max-width: 700px; margin: 0 auto; padding: 40px 20px; box-sizing: border-box;
+            min-height: 100vh;
         }
 
-        /* --- ПРОФИЛЬ И КНОПКИ --- */
-        .avatar-container { text-align: center; margin-bottom: 30px; }
+        .avatar-container { text-align: center; margin-bottom: 20px; }
         .avatar {
-            width: 160px; height: 160px; border-radius: 15px; 
-            border: 4px solid #cc0000; background-color: #111; object-fit: cover;
-            box-shadow: 20px 20px 60px #030000, -20px -20px 60px #080000, inset 5px 5px 10px rgba(255,0,0,0.3);
-            transition: transform 0.5s ease;
+            width: 150px; height: 150px; border-radius: 15px; 
+            border: 3px solid #cc0000; background-color: #111; object-fit: cover;
+            box-shadow: 0 0 25px rgba(204, 0, 0, 0.6); transition: transform 0.3s ease;
         }
-        .avatar:hover { transform: scale(1.1) rotateY(10deg); }
+        .avatar:hover { transform: scale(1.05); }
 
         h1 {
-            margin: 20px 0 10px 0; font-size: 2.8em; text-transform: uppercase;
-            letter-spacing: 5px; text-shadow: 2px 2px 0px #990000, 5px 5px 15px rgba(255, 0, 0, 0.7);
+            margin: 15px 0 5px 0; font-size: 2.5em; text-transform: uppercase;
+            letter-spacing: 3px; text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5);
+        }
+
+        .bio-box {
+            background: rgba(15, 0, 0, 0.7);
+            border: 1px solid #cc0000;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(204, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        .bio-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #d3d3d3;
+            margin: 0;
         }
 
         .section-title {
-            width: 100%; text-align: center; font-size: 1.4em; color: #cc0000;
-            border-bottom: 2px solid #cc0000; padding-bottom: 8px; margin: 25px 0 20px 0;
-            text-transform: uppercase; letter-spacing: 3px;
+            width: 100%; text-align: center; font-size: 1.2em; color: #cc0000;
+            border-bottom: 1px solid #cc0000; padding-bottom: 5px; margin: 15px 0;
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        .button-group { display: flex; gap: 20px; justify-content: center; width: 100%; flex-wrap: wrap; }
+        .button-group { 
+            display: flex; gap: 15px; justify-content: center; width: 100%; flex-wrap: wrap; margin-bottom: 20px;
+        }
+        
         .btn {
-            display: inline-block; text-decoration: none; color: #ffffff;
-            background: rgba(10, 0, 0, 0.8); border: 2px solid #990000;
-            padding: 15px 35px; border-radius: 8px; font-weight: bold; font-size: 1.2em;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-decoration: none; color: #ffffff;
+            background: rgba(0, 0, 0, 0.6); border: 2px solid #990000;
+            padding: 12px 20px; border-radius: 8px; font-weight: bold;
             text-transform: uppercase; transition: all 0.3s ease; min-width: 140px;
-            text-align: center; backdrop-filter: blur(8px); transform-style: preserve-3d;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.5), inset 2px 2px 5px rgba(255,0,0,0.2);
+            text-align: center; backdrop-filter: blur(5px);
         }
         .btn:hover {
             background: #cc0000; color: #000000; border-color: #ff3333;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9); transform: translateY(-5px) scale(1.05) rotateY(5deg);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); transform: translateY(-3px);
         }
 
-        /* --- SPOTIFY ПЛЕЕР (КНОПКА И МОДАЛКА) --- */
-        .spotify-trigger {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;
-            background: rgba(10, 0, 0, 0.9); border: 2px solid #1DB954; color: #1DB954;
-            padding: 12px 30px; border-radius: 30px; font-weight: bold; font-size: 1.1em;
-            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
-            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); transition: all 0.3s ease; backdrop-filter: blur(5px);
+        .btn-title { font-size: 1.1em; }
+        .btn-desc { 
+            font-size: 0.65em; color: #a0a0a0; margin-top: 5px; 
+            text-transform: lowercase; font-weight: normal; letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
-        .spotify-trigger:hover {
-            background: #1DB954; color: #000; box-shadow: 0 0 25px rgba(29, 185, 84, 0.8);
-            transform: translateX(-50%) translateY(-3px) scale(1.05);
-        }
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 100;
-            display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
-        }
-        .modal-content {
-            background: #111; padding: 25px; border-radius: 20px; border: 2px solid #1DB954;
-            box-shadow: 0 0 40px rgba(29, 185, 84, 0.4); position: relative; width: 90%; max-width: 400px;
-            transform: translateY(50px); transition: transform 0.3s ease;
-        }
-        .close-btn {
-            position: absolute; top: -15px; right: -15px; background: #1DB954; color: #000;
-            width: 35px; height: 35px; border-radius: 50%; font-size: 24px; font-weight: bold;
-            display: flex; justify-content: center; align-items: center; cursor: pointer;
-            box-shadow: 0 0 10px #1DB954; transition: all 0.2s;
-        }
-        .close-btn:hover { background: #fff; transform: scale(1.1); }
+        .btn:hover .btn-desc { color: #222; }
     </style>
 </head>
 <body>
@@ -97,50 +114,74 @@
     <div class="content-wrapper">
         <div class="avatar-container">
             <img src="avatar.png" alt="akrgood" class="avatar">
-            <h1>akrgood</h1>
+            <h1 data-i18n="greeting">Привіт, я akrgood!</h1>
         </div>
 
-        <div class="section-title" data-i18n="contact">Связь</div>
+        <div class="bio-box">
+            <p class="bio-text" data-i18n="bioText">
+                Займаюсь українізацією ігор, створюю круті проєкти та розвиваю спільноту <strong>PSP_UA</strong>. 
+                <br><br>
+                Моя мета - дати друге дихання перекладаючи їх рідною мовою. Окрім геймдеву та перекладів, я захоплююсь програмуванням, дизайном та створенням унікального контенту.
+            </p>
+        </div>
+
+        <div class="section-title" data-i18n="contact">Зв'язок</div>
         <div class="button-group">
-            <a href="https://AKRGGXD.T.ME" target="_blank" class="btn">Telegram</a>
-            <a href="https://www.tiktok.com/@MS4wLjABAAAA4SqJkcv9UJPP5HCm4uVSNOsWREn_nCuer8nkzhvhXXkIUmxNshJK0DerNUC-nih7" target="_blank" class="btn">TikTok</a>
+            <a href="https://AKRGGXD.T.ME" target="_blank" class="btn">
+                <span class="btn-title">Telegram</span>
+            </a>
+            <a href="https://www.tiktok.com/@MS4wLjABAAAA4SqJkcv9UJPP5HCm4uVSNOsWREn_nCuer8nkzhvhXXkIUmxNshJK0DerNUC-nih7" target="_blank" class="btn">
+                <span class="btn-title">TikTok</span>
+            </a>
         </div>
 
-        <div class="section-title" data-i18n="projects">Проекты</div>
+        <div class="section-title" data-i18n="projects">Проєкти</div>
         <div class="button-group">
-            <a href="github.html" class="btn">GitHub</a>
-            <a href="pspua.html" class="btn">PSP UA</a>
-        </div>
-    </div>
-
-    <div class="spotify-trigger" id="openSpotify" data-i18n="spotifyBtn">
-        🎵 Слушать Spotify
-    </div>
-
-    <div class="modal-overlay" id="spotifyModal">
-        <div class="modal-content" id="spotifyContent">
-            <div class="close-btn" id="closeSpotify">×</div>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/6vTDj38czuDvZO3rokXlIA?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <a href="pspua.html" class="btn" title="ігри українською для psp">
+                <span class="btn-title">PSP_UA</span>
+                <span class="btn-desc" data-i18n="desc_ua">ігри українською для psp</span>
+            </a>
+            <a href="pspru.html" class="btn" title="игры на русском для псп">
+                <span class="btn-title">PSP_ru</span>
+                <span class="btn-desc" data-i18n="desc_ru">игры на русском для псп</span>
+            </a>
+            <a href="github.html" class="btn">
+                <span class="btn-title">GitHub</span>
+            </a>
+            <a href="otherProject.html" class="btn">
+                <span class="btn-title" data-i18n="otherProjects">Інші</span>
+            </a>
         </div>
     </div>
 
     <script>
-        // --- 1. МУЛЬТИЯЗЫЧНОСТЬ ---
         const dict = {
-            en: {
-                contact: "Contact",
-                projects: "Projects",
-                spotifyBtn: "🎵 Listen on Spotify"
-            },
-            ru: {
-                contact: "Связь",
-                projects: "Проекты",
-                spotifyBtn: "🎵 Слушать Spotify"
-            },
             uk: {
+                greeting: "Привіт, я akrgood!",
+                bioText: "Займаюсь українізацією ігор, створюю круті проєкти та розвиваю спільноти <strong>PSP_UA</strong>.<br><br>Моя мета - дати друге дихання іграм, перекладаючи їх рідною мовою. Окрім геймдеву та перекладів, я захоплююсь програмуванням, дизайном та створенням унікального контенту.",
                 contact: "Зв'язок",
                 projects: "Проєкти",
-                spotifyBtn: "🎵 Слухати Spotify"
+                desc_ua: "ігри українською для psp",
+                desc_ru: "ігри російською для psp",
+                otherProjects: "Інші"
+            },
+            ru: {
+                greeting: "Привет, я akrgood!",
+                bioText: "Занимаюсь локализацией игр(и не только), создаю классные проекты и развиваю сообщества <strong>PSP_UA</strong> и <strong>PSP_RU</strong>.<br><br>Моя цель — вдохнуть в игры новую жизнь, переводя их. Помимо разработки игр и переводов, я увлекаюсь программированием, дизайном и созданием уникального контента.",
+                contact: "Связь",
+                projects: "Проекты",
+                desc_ua: "игры на украинском для псп",
+                desc_ru: "игры на русском для псп",
+                otherProjects: "Прочие"
+            },
+            en: {
+                greeting: "Hi, I'm akrgood!",
+                bioText: "I work on localizing games (and more), create awesome projects, and help grow the <strong>PSP_UA</strong> and <strong>PSP_RU</strong> communities.<br><br>My goal is to breathe new life into games by translating them. In addition to game development and translation, I enjoy programming, design, and creating unique content.",
+                contact: "Contact",
+                projects: "Projects",
+                desc_ua: "psp games in ukrainian",
+                desc_ru: "psp games in russian",
+                otherProjects: "Other"
             }
         };
 
@@ -156,11 +197,10 @@
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if(dict[currentLang][key]) {
-                el.innerText = dict[currentLang][key];
+                el.innerHTML = dict[currentLang][key];
             }
         });
 
-        // --- 2. СКРИПТ ДЛЯ ВОЛН PSP (С АДАПТАЦИЕЙ ПОД ТЕЛЕФОН) ---
         const canvas = document.getElementById('psp-canvas');
         const ctx = canvas.getContext('2d');
         let width, height, time = 0;
@@ -187,16 +227,15 @@
 
         function animate() {
             let bgGradient = ctx.createLinearGradient(0, 0, 0, height);
-            bgGradient.addColorStop(0, '#1a0000'); bgGradient.addColorStop(1, '#000000');
+            bgGradient.addColorStop(0, '#150000'); bgGradient.addColorStop(1, '#000000');
             ctx.fillStyle = bgGradient; ctx.fillRect(0, 0, width, height);
             
-            // Если экран узкий (телефон), поднимаем волны в центр. Иначе оставляем внизу.
             const isMobile = width < 768;
             const wave1Y = isMobile ? height * 0.55 : height * 0.75;
             const wave2Y = isMobile ? height * 0.50 : height * 0.70;
             const neonWaveY = isMobile ? height * 0.45 : height * 0.65;
             
-            drawPSPWave(wave1Y, 120, 0.001, 0.8, 0, 'rgba(150, 0, 0, 0)', 'rgba(200, 0, 0, 0.1)');
+            drawPSPWave(wave1Y, 120, 0.001, 0.8, 0, 'rgba(150, 0, 0, 0)', 'rgba(200, 0, 0, 0.15)');
             drawPSPWave(wave2Y, 90, 0.0015, 1.2, 2, 'rgba(255, 0, 0, 0.05)', 'rgba(255, 0, 0, 0.2)');
             
             ctx.beginPath();
@@ -211,27 +250,6 @@
             time += 0.005; requestAnimationFrame(animate);
         }
         animate();
-
-        // --- 3. СКРИПТ ДЛЯ МОДАЛЬНОГО ОКНА SPOTIFY ---
-        const modal = document.getElementById('spotifyModal');
-        const btn = document.getElementById('openSpotify');
-        const closeBtn = document.getElementById('closeSpotify');
-        const modalContent = document.getElementById('spotifyContent');
-
-        btn.onclick = () => {
-            modal.style.display = "flex";
-            setTimeout(() => { modal.style.opacity = "1"; modalContent.style.transform = "translateY(0)"; }, 10);
-        }
-        closeBtn.onclick = () => {
-            modal.style.opacity = "0"; modalContent.style.transform = "translateY(50px)";
-            setTimeout(() => { modal.style.display = "none"; }, 300);
-        }
-        window.onclick = (e) => {
-            if (e.target == modal) {
-                modal.style.opacity = "0"; modalContent.style.transform = "translateY(50px)";
-                setTimeout(() => { modal.style.display = "none"; }, 300);
-            }
-        }
     </script>
 </body>
 </html>

@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSP_ru - Игры на русском для PSP</title>
     
-    <title>PSP_UA - Ігри українською для PSP</title>
-    
-    <meta name="description" content="Офіційний хаб проєкту PSP_UA від akrgood. Каталог якісних перекладів та модифікацій класичних ігор для консолі PlayStation Portable (PSP) українською мовою.">
-    <meta name="keywords" content="PSP_UA, akrgood, ігри українською для psp, переклад ігор psp, psp модифікації, локалізація ігор, ukrainian psp games">
+    <meta name="description" content="Официальный хаб проекта PSP_ru от akrgood. Каталог переводов и модификаций классических игр для консоли PlayStation Portable (PSP) на русском языке.">
+    <meta name="keywords" content="PSP_RU, akrgood, игры на русском для psp, перевод игр psp, psp модификации, локализация игр">
     <meta name="author" content="akrgood">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "PSP_UA",
-      "alternateName": "Ігри українською для PSP",
-      "url": "https://akrgood.github.io/pspua.html",
-      "description": "Проєкт з українізації та створення модифікацій для ігор PlayStation Portable (PSP).",
+      "name": "PSP_ru",
+      "alternateName": "Игры на русском для PSP",
+      "url": "https://akrgood.github.io/pspru.html",
+      "description": "Проект по локализации и сбору модификаций для игр PlayStation Portable (PSP).",
       "creator": {
         "@type": "Person",
         "name": "akrgood",
@@ -32,19 +31,16 @@
             background-color: #0a0a0a; font-family: 'Arial', sans-serif;
             color: #ffffff; overflow-x: hidden;
         }
-
         #psp-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none;
         }
-
         .content-wrapper {
             position: relative; z-index: 10;
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; width: 100%; box-sizing: border-box;
             padding: 30px 20px;
         }
-
         .header-title {
             font-size: 3.5em; font-weight: bold; text-transform: uppercase;
             letter-spacing: 8px; margin-bottom: 40px; margin-top: 20px;
@@ -53,19 +49,17 @@
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
         }
-
         .grid-container {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             gap: 20px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1200px; 
             margin-bottom: 50px;
         }
-
         .grid-item {
             position: relative;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1 / 1; 
             background: rgba(30, 30, 30, 0.6);
             border: 2px solid #555;
             border-radius: 12px;
@@ -75,7 +69,6 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
         }
-
         .grid-item::before {
             content: '✖';
             position: absolute;
@@ -84,15 +77,13 @@
             z-index: 0;
             transition: color 0.3s ease;
         }
-
         .grid-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; 
             position: relative;
-            z-index: 1;
+            z-index: 1; 
         }
-
         .grid-item:hover {
             transform: translateY(-5px) scale(1.05);
             border-color: #ffffff;
@@ -100,10 +91,8 @@
             z-index: 2;
         }
         .grid-item:hover::before {
-            color: #888;
+            color: #888; 
         }
-
-
         .back-btn {
             position: absolute;
             top: 20px;
@@ -119,16 +108,14 @@
             transition: all 0.3s;
         }
         .back-btn:hover { color: #fff; border-color: #fff; }
-
         .footer {
-            margin-top: auto;
+            margin-top: auto; 
             padding-top: 30px;
             font-size: 1.1em;
             color: #888;
             letter-spacing: 2px;
             font-family: monospace;
         }
-
         @media (max-width: 992px) {
             .grid-container { grid-template-columns: repeat(4, 1fr); } 
             .header-title { font-size: 2.8em; }
@@ -152,30 +139,21 @@
         
         <a href="index.html" class="back-btn">← Назад</a>
         
-        <div class="header-title">PSP_UA</div>
+        <div class="header-title">PSP_RU</div>
 
         <div class="grid-container">
-            <a href="silc_ua.html" class="grid-item">
-                <img src="silc-cover-pspua.png" alt="Seen in Liberty City">
-            </a>
-
-            <a href="pce_ua.html" class="grid-item">
-                <img src="pce-cover-pspua.png" alt="Pac-Man Championship Edition">
-            </a>
-            <a href="sho_ua.html" class="grid-item">
-                <img src="sho-cover-pspua.png" alt="Silent Hill Origins">
-            </a>
-            <a href="#" class="grid-item"></a>
-            <a href="#" class="grid-item"></a>
-            <a href="#" class="grid-item"></a>
-            
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
-            
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
             <a href="#" class="grid-item"></a>
