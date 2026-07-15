@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Theft Auto: Liberty City Stories (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Grand Theft Auto: Liberty City Stories українською мовою для PSP. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="GTA Liberty City Stories PSP, GTA LCS українською, PSP_UA, akrgood, psp ігри українською, екшен на psp">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Grand Theft Auto: Liberty City Stories",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Action, Adventure",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад гри Grand Theft Auto: Liberty City Stories для консолі PlayStation Portable (PSP) від akrgood та проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #050000; font-family: 'Arial', sans-serif;
+            color: #fff; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #050000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(204, 0, 0, 0.6));
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 0, 0, 0.85); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 450px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 15px rgba(204, 0, 0, 0.5));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(15, 0, 0, 0.8);
+            border: 3px solid #8b0000;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.4), inset 0 0 20px rgba(204, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 10px;
+            border: 3px solid #cc0000;
+            box-shadow: 0 0 25px rgba(204, 0, 0, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.8em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff3333, 0 0 20px #cc0000;
+        }
+        .game-desc {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(204, 0, 0, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ff4d4d;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(204, 0, 0, 0.6);
+        }
+        .info-list a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ff3333;
+            text-shadow: 0 0 15px #ff3333;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #8b0000;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff3333;
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(20, 0, 0, 0.9);
+            border: 2px solid #cc0000;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(204, 0, 0, 0.4), inset 0 0 10px rgba(204, 0, 0, 0.2);
+        }
+        .dl-btn:hover {
+            background: #cc0000;
+            color: #fff;
+            box-shadow: 0 0 30px #cc0000, 0 0 50px #8b0000;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(15, 0, 0, 0.8);
+            border: 3px solid #8b0000;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.4), inset 0 0 20px rgba(204, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #8b0000;
+            padding-bottom: 15px;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff3333;
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #cc0000;
+            box-shadow: 0 0 15px rgba(204, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ffffff;
+            box-shadow: 0 0 30px #ffffff;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ff3333;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #cc0000;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.8);
+            box-shadow: 0 0 10px rgba(204, 0, 0, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #cc0000; 
+            color: #fff; 
+            box-shadow: 0 0 25px #cc0000; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="lcs-logo.png" alt="" class="preloader-icon">
+    </div>
+
+    <img src="gbg.png" id="bg-image" alt="Background">
+    
+    <div class="bg-overlay"></div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="lcs-logo.png" alt="GTA Liberty City Stories Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="lcs-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">GTA: Liberty City Stories</h1>
+                
+                <p class="game-desc">Поверніться до Ліберті-Сіті у культовій Grand Theft Auto: Liberty City Stories, тепер із повним українським перекладом! Гра розповідає історію Тоні Сіпріані, який повертається до міста після тривалого переховування і намагається повернути родині Леоне колишню владу. На вас чекають кримінальні розбірки, корупція, зради та фірмовий чорний гумор. Переклад створено спеціально для портативної консолі PSP, щоб ви могли насолоджуватися улюбленою грою рідною мовою будь-де та повністю зануритись у похмуру атмосферу мафіозних війн східного узбережжя.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://www.youtube.com/watch?v=5rTzMAPQAu4" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://AKRGGXD.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1zutbFbJPRbF8eeeAj4ZEywpZltPr7GKx/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                        <a href="https://www.mediafire.com/file/s5hwrq27dovflll/lcsUA_v1.iso/file" target="_blank" class="dl-btn">MediaFire</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="lcs-screen1.png" alt="Скріншот 1">
+                <img src="lcs-screen2.png" alt="Скріншот 2">
+                <img src="lcs-screen3.png" alt="Скріншот 3">
+                <img src="lcs-screen4.png" alt="Скріншот 4">
+                <img src="lcs-screen5.png" alt="Скріншот 5">
+                <img src="lcs-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+            
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(100, 0, 0, 0)', 'rgba(139, 0, 0, 0.2)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(150, 0, 0, 0)', 'rgba(204, 0, 0, 0.15)');
+            
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#cc0000'; 
+            ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.shadowBlur = 20; ctx.shadowColor = '#cc0000'; 
+            ctx.stroke(); ctx.shadowBlur = 0;
+
+            time += 0.005; requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
