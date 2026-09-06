@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>God of War: Ghost of Sparta (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити God of War: Ghost of Sparta українською мовою для PSP. Пориньте в криваву подорож Кратоса у пошуках свого брата Деймоса. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="God of War Ghost of Sparta PSP, God of War українською, PSP_UA, akrgood, psp ігри українською, слешер на psp, Кратос">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "God of War: Ghost of Sparta",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Action, Hack and Slash",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад культового екшен-слешера God of War: Ghost of Sparta для консолі PlayStation Portable (PSP) від проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #080202; font-family: 'Arial', sans-serif;
+            color: #fff; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #080202;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px #ff2a00);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 35px #ff6600); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(12, 3, 3, 0.85); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 450px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(255, 42, 0, 0.6));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(20, 5, 5, 0.85);
+            border: 3px solid #8a0000;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(138, 0, 0, 0.5), inset 0 0 20px rgba(255, 69, 0, 0.15);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 10px;
+            border: 3px solid #cc1100;
+            box-shadow: 0 0 25px rgba(204, 17, 0, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.8em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff3300;
+            text-shadow: 0 0 12px #ff3300, 0 0 25px #8a0000;
+        }
+        .game-desc {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 69, 0, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ff6600;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 102, 0, 0.6);
+        }
+        .info-list a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ff3300;
+            text-shadow: 0 0 15px #ff3300;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #8a0000;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff3300;
+            text-shadow: 0 0 10px #ff3300;
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(25, 5, 5, 0.9);
+            border: 2px solid #cc1100;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(204, 17, 0, 0.4), inset 0 0 10px rgba(255, 69, 0, 0.2);
+        }
+        .dl-btn:hover {
+            background: #cc1100;
+            color: #fff;
+            box-shadow: 0 0 30px #cc1100, 0 0 50px #8a0000;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(20, 5, 5, 0.85);
+            border: 3px solid #8a0000;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(138, 0, 0, 0.5), inset 0 0 20px rgba(255, 69, 0, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #8a0000;
+            padding-bottom: 15px;
+            color: #ff3300;
+            text-shadow: 0 0 10px #ff3300;
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #cc1100;
+            box-shadow: 0 0 15px rgba(204, 17, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ff6600;
+            box-shadow: 0 0 30px #ff6600;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ff3300;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #cc1100;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.8);
+            box-shadow: 0 0 10px rgba(204, 17, 0, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #cc1100; 
+            color: #fff; 
+            box-shadow: 0 0 25px #cc1100; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/gowgos-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/gowgos-logo.png" alt="God of War: Ghost of Sparta Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/gowgos-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">God of War: Ghost of Sparta</h1>
+                
+                <p class="game-desc">Вирушайте у найпохмурішу подорож Спартанця в неперевершеній God of War: Ghost of Sparta, тепер повністю українською мовою! Ставши новим богом війни, Кратос не знаходить спокою через видіння зі свого смертного минулого. Прагнучи розірвати кайдани богів та дізнатися долю свого брата Деймоса, він прямує до володінь Смерті, залишаючи за собою руїни Атлантиди та попіл Олімпу. Переклад адаптований спеціально для PSP, щоб ви могли відчути лють і силу спартанського клинка рідною мовою без компромісів.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="https://yehortrs.t.me" target="_blank">Yehor</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/bDN3aUzyctY?si=T7pJ-xabTirw5_Yc" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1IoWUna2HH_HIzl8h5QKkPkOnViyA86C4/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/gowgos-screen1.png" alt="Скріншот 1">
+                <img src="assets/gowgos-screen2.png" alt="Скріншот 2">
+                <img src="assets/gowgos-screen3.png" alt="Скріншот 3">
+                <img src="assets/gowgos-screen4.png" alt="Скріншот 4">
+                <img src="assets/gowgos-screen5.png" alt="Скріншот 5">
+                <img src="assets/gowgos-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let embers = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.08) {
+                embers.push({
+                    x: Math.random() * width,
+                    y: height + 20,
+                    size: 1.5 + Math.random() * 3.5,
+                    speedY: 1.5 + Math.random() * 2.5,
+                    speedX: (Math.random() - 0.5) * 1.2,
+                    alpha: 1.0,
+                    decay: 0.005 + Math.random() * 0.01
+                });
+            }
+
+            for (let i = embers.length - 1; i >= 0; i--) {
+                let e = embers[i];
+                e.y -= e.speedY;
+                e.x += e.speedX + Math.sin(time * 2 + e.y * 0.02) * 0.5;
+                e.alpha -= e.decay;
+
+                if (e.alpha <= 0 || e.y < -20) {
+                    embers.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, ${Math.floor(60 + e.alpha * 120)}, 0, ${e.alpha})`;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = '#ff3300';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(138, 0, 0, 0)', 'rgba(138, 0, 0, 0.25)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(255, 69, 0, 0)', 'rgba(255, 69, 0, 0.2)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#ff3300';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff3300';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
