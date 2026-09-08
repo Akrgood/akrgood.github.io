@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call of Duty: Roads to Victory (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Call of Duty: Roads to Victory українською мовою для PSP. Друга світова війна на екрані портативної консолі. Переклда від проєкту PSP_UA.">
+    <meta name="keywords" content="Call of Duty Roads to Victory PSP, Call of Duty українською, PSP_UA, akrgood, psp ігри українською, шутер на psp, Друга світова війна">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Call of Duty: Roads to Victory",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "First-Person Shooter, Action",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад військового шутера Call of Duty: Roads to Victory для консолі PlayStation Portable (PSP) від проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #06090e; font-family: 'Arial', sans-serif;
+            color: #d2d8e0; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #06090e;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px #4d79a8);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 35px #7aa5d2); }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(6, 9, 14, 0.85); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 450px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(90, 135, 185, 0.5));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(12, 17, 24, 0.85);
+            border: 3px solid #28394e;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(75, 110, 150, 0.15);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 10px;
+            border: 3px solid #3c5473;
+            box-shadow: 0 0 25px rgba(45, 68, 95, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.6em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8daed3;
+            text-shadow: 0 0 10px rgba(141, 174, 211, 0.7), 0 0 25px #24354a;
+        }
+        .game-desc {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #b0bac7;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(65, 95, 130, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #7398c2;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(115, 152, 194, 0.5);
+        }
+        .info-list a {
+            color: #dbe4f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #a4c4eb;
+            text-shadow: 0 0 12px #a4c4eb;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #28394e;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8daed3;
+            text-shadow: 0 0 10px rgba(141, 174, 211, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(16, 23, 33, 0.9);
+            border: 2px solid #3c5473;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(75, 110, 150, 0.2);
+        }
+        .dl-btn:hover {
+            background: #3c5473;
+            color: #ffffff;
+            box-shadow: 0 0 30px #638bb8, 0 0 45px #24354a;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(12, 17, 24, 0.85);
+            border: 3px solid #28394e;
+            border-radius: 15px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(75, 110, 150, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #28394e;
+            padding-bottom: 15px;
+            color: #8daed3;
+            text-shadow: 0 0 10px rgba(141, 174, 211, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #3c5473;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #8daed3;
+            box-shadow: 0 0 30px #8daed3;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #8daed3;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #3c5473;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(12, 17, 24, 0.85);
+            box-shadow: 0 0 10px rgba(45, 68, 95, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #3c5473; 
+            color: #ffffff; 
+            box-shadow: 0 0 25px #8daed3; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/cod-logo.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/cod-logo.png" alt="Call of Duty: Roads to Victory Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/cod-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Call of Duty: Roads to Victory</h1>
+                
+                <p class="game-desc">Пройдіть крізь запеклі бої Другої світової війни у легендарній Call of Duty: Roads to Victory для PSP, тепер із повним українським перекладом! Станьте свідком вирішальних історичних операцій, воюючи за піхотинців армій США, Канади та Великої Британії. Штурмуйте укріплені вогневі точки ворога, тримайте оборону під артилерійськими обстрілами та ведіть прицільний вогонь у руїнах європейських міст. Переклад створений спеціально для PSP_UA, зберігаючи атмосферу фронтового братерства та реалізм бойових дій.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="https://yehortrs.t.me" target="_blank">Yehor</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="#" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="#" target="_blank" class="dl-btn">СКОРО</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/cod-screen1.png" alt="Скріншот 1">
+                <img src="assets/cod-screen2.png" alt="Скріншот 2">
+                <img src="assets/cod-screen3.png" alt="Скріншот 3">
+                <img src="assets/cod-screen4.png" alt="Скріншот 4">
+                <img src="assets/cod-screen5.png" alt="Скріншот 5">
+                <img src="assets/cod-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+
+        let embers = [];
+        let smoke = [];
+        let bullets = [];
+        let bulletHoles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function createBulletHole(x, y) {
+            let cracks = [];
+            let count = 5 + Math.floor(Math.random() * 4);
+            for (let i = 0; i < count; i++) {
+                let angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.5;
+                let len = 12 + Math.random() * 18;
+                cracks.push({ angle, len });
+            }
+            bulletHoles.push({
+                x: x,
+                y: y,
+                alpha: 1.0,
+                radius: 4 + Math.random() * 3,
+                cracks: cracks
+            });
+            if (bulletHoles.length > 20) bulletHoles.shift();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.08) {
+                smoke.push({
+                    x: Math.random() * width,
+                    y: height + 50,
+                    size: 40 + Math.random() * 30,
+                    growth: 0.4 + Math.random() * 0.4,
+                    speedY: 0.8 + Math.random() * 1.2,
+                    speedX: (Math.random() - 0.5) * 0.8,
+                    alpha: 0.16 + Math.random() * 0.08,
+                    decay: 0.0007 + Math.random() * 0.0006
+                });
+            }
+
+            for (let i = smoke.length - 1; i >= 0; i--) {
+                let s = smoke[i];
+                s.y -= s.speedY;
+                s.x += s.speedX + Math.sin(time + s.y * 0.01) * 0.5;
+                s.size += s.growth;
+                s.alpha -= s.decay;
+
+                if (s.alpha <= 0 || s.y < -s.size) {
+                    smoke.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                let smokeGrad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size);
+                smokeGrad.addColorStop(0, `rgba(30, 42, 58, ${s.alpha * 1.2})`);
+                smokeGrad.addColorStop(0.6, `rgba(20, 28, 38, ${s.alpha * 0.6})`);
+                smokeGrad.addColorStop(1, 'rgba(10, 15, 20, 0)');
+                ctx.fillStyle = smokeGrad;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            if (Math.random() < 0.3) {
+                embers.push({
+                    x: Math.random() * width,
+                    y: height + 20,
+                    size: 1.5 + Math.random() * 4,
+                    speedY: 2.0 + Math.random() * 3.2,
+                    speedX: (Math.random() - 0.5) * 2.0,
+                    alpha: 1.0,
+                    decay: 0.007 + Math.random() * 0.01
+                });
+            }
+
+            for (let i = embers.length - 1; i >= 0; i--) {
+                let e = embers[i];
+                e.y -= e.speedY;
+                e.x += e.speedX + Math.sin(time * 3 + e.y * 0.02) * 0.8;
+                e.alpha -= e.decay;
+
+                if (e.alpha <= 0 || e.y < -20) {
+                    embers.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, ${Math.floor(80 + e.alpha * 120)}, 10, ${e.alpha})`;
+                ctx.shadowBlur = 14;
+                ctx.shadowColor = '#ff4d00';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            if (Math.random() < 0.025) {
+                let fromLeft = Math.random() < 0.5;
+                let angle = fromLeft ? (-0.15 + Math.random() * 0.3) : (Math.PI - 0.15 + Math.random() * 0.3);
+                bullets.push({
+                    x: fromLeft ? -60 : width + 60,
+                    y: Math.random() * height,
+                    vx: Math.cos(angle) * (18 + Math.random() * 12),
+                    vy: Math.sin(angle) * (18 + Math.random() * 12),
+                    len: 50 + Math.random() * 40
+                });
+            }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
+                b.x += b.vx;
+                b.y += b.vy;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y);
+                ctx.lineTo(b.x - b.vx * 2.5, b.y - b.vy * 2.5);
+                ctx.strokeStyle = '#ffe082';
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ff9800';
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+                ctx.restore();
+
+                if (Math.random() < 0.015 && b.x > 50 && b.x < width - 50 && b.y > 50 && b.y < height - 50) {
+                    createBulletHole(b.x, b.y);
+                }
+
+                if (b.x < -100 || b.x > width + 100 || b.y < -100 || b.y > height + 100) {
+                    bullets.splice(i, 1);
+                }
+            }
+
+            for (let i = bulletHoles.length - 1; i >= 0; i--) {
+                let bh = bulletHoles[i];
+                bh.alpha -= 0.0015;
+                if (bh.alpha <= 0) {
+                    bulletHoles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(bh.x, bh.y, bh.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(5, 7, 10, ${bh.alpha * 0.95})`;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `rgba(255, 120, 0, ${bh.alpha * 0.8})`;
+                ctx.fill();
+
+                ctx.strokeStyle = `rgba(140, 160, 185, ${bh.alpha * 0.7})`;
+                ctx.lineWidth = 1.5;
+                for (let j = 0; j < bh.cracks.length; j++) {
+                    let c = bh.cracks[j];
+                    ctx.beginPath();
+                    ctx.moveTo(bh.x + Math.cos(c.angle) * bh.radius, bh.y + Math.sin(c.angle) * bh.radius);
+                    ctx.lineTo(bh.x + Math.cos(c.angle) * c.len, bh.y + Math.sin(c.angle) * c.len);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(15, 23, 34, 0)', 'rgba(30, 48, 70, 0.35)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(40, 60, 85, 0)', 'rgba(60, 90, 125, 0.22)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#6d95c4';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#6d95c4';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>

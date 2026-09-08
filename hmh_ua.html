@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Half-Minute Hero (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Half-Minute Hero українською мовою для PSP. Класична 8-бітна JRPG-пригода, де на порятунок світу є лише 30 секунд. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="Half-Minute Hero PSP, Half-Minute Hero українською, PSP_UA, akrgood, psp ігри українською, 8-bit rpg psp, Yūsha 30">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Half-Minute Hero",
+      "alternateName": "Yūsha 30",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Action RPG, Retro 8-bit",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад швидкісної ретро-RPG гри Half-Minute Hero для консолі PlayStation Portable (PSP) від akrgood та проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #040814; font-family: 'Courier New', Courier, monospace;
+            color: #ffffff; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #040814;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 140px;
+            height: auto;
+            animation: pulse 1.2s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px #ffd000);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.94); opacity: 0.75; }
+            50% { transform: scale(1.06); opacity: 1; filter: drop-shadow(0 0 35px #ffd000); }
+            100% { transform: scale(0.94); opacity: 0.75; }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(4, 8, 20, 0.86); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 450px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(255, 208, 0, 0.6));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(8, 22, 54, 0.88);
+            border: 3px solid #ffd000;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 0 3px #184288, inset 0 0 25px rgba(255, 208, 0, 0.2);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 25px rgba(255, 208, 0, 0.45);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.6em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffd000;
+            text-shadow: 3px 3px 0 #ff3b30, 0 0 20px rgba(255, 208, 0, 0.6);
+        }
+        .game-desc {
+            font-size: 1.05em;
+            line-height: 1.65;
+            color: #e2ebf5;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px #000;
+            text-align: justify;
+            font-family: 'Arial', sans-serif;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+            font-family: 'Arial', sans-serif;
+        }
+        .info-list li {
+            margin-bottom: 14px;
+            border-bottom: 1px dashed rgba(255, 208, 0, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ffd000;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 208, 0, 0.5);
+        }
+        .info-list a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ffd000;
+            text-shadow: 0 0 12px #ffd000;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #ffd000;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffd000;
+            text-shadow: 0 0 10px rgba(255, 208, 0, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #040814;
+            background: #ffd000;
+            border: 2px solid #ffffff;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 208, 0, 0.5);
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .dl-btn:hover {
+            background: #ff3b30;
+            color: #ffffff;
+            border-color: #ffd000;
+            box-shadow: 0 0 30px #ff3b30, 0 0 45px #ffd000;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(8, 22, 54, 0.88);
+            border: 3px solid #ffd000;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 0 3px #184288;
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #ffd000;
+            padding-bottom: 15px;
+            color: #ffd000;
+            text-shadow: 0 0 10px rgba(255, 208, 0, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #285bb5;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ffd000;
+            box-shadow: 0 0 25px #ffd000;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffd000;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #ffd000;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(8, 22, 54, 0.9);
+            box-shadow: 0 0 12px rgba(255, 208, 0, 0.4);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #ffd000; 
+            color: #040814; 
+            box-shadow: 0 0 25px #ffd000; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/hmh-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/hmh-logo.png" alt="Half-Minute Hero Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/hmh-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Half-Minute Hero</h1>
+                
+                <p class="game-desc">У вас є рівно 30 секунд, щоб врятувати світ! Half-Minute Hero для PSP — це легендарна швидкісна екшен-RPG у ретро-стилі з автентичним українським перекладом. Могутній Темний Лорд щойно розпочав закляття кінця світу, і лише Герой під керівництвом меркантильної Богині Часу здатен зупинити апокаліпсис. Прокачуйте рівні на блискавичній швидкості, скуповуйте спорядження в поселеннях, поповнюйте таймер за монети біля статуй та рятуйте людство за пів хвилини рідною мовою.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="#" target="_blank">BakAI</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/sQXqcbXq2nU?si=joLacOskMGQrqXpr" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/16F4VQLAco8B820T624mb88ibpkkqwQA3/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/hmh-screen1.png" alt="Скріншот 1">
+                <img src="assets/hmh-screen2.png" alt="Скріншот 2">
+                <img src="assets/hmh-screen3.png" alt="Скріншот 3">
+                <img src="assets/hmh-screen4.png" alt="Скріншот 4">
+                <img src="assets/hmh-screen5.png" alt="Скріншот 5">
+                <img src="assets/hmh-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let rpgEntities = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.04) {
+                let types = ['timer', 'coin', 'pixel'];
+                rpgEntities.push({
+                    x: width + 50,
+                    type: types[Math.floor(Math.random() * types.length)],
+                    speed: 2.2 + Math.random() * 2.8,
+                    size: 14 + Math.random() * 10,
+                    offsetY: (Math.random() - 0.5) * 40
+                });
+            }
+
+            const neonWaveY = height * 0.65;
+
+            for (let i = rpgEntities.length - 1; i >= 0; i--) {
+                let ent = rpgEntities[i];
+                ent.x -= ent.speed;
+
+                let waveNoise = Math.sin(ent.x * 0.003 + time * 2.0) * 40 * 0.2;
+                let waveY = neonWaveY + waveNoise + Math.sin(ent.x * 0.002 + time * 1.6 + 4) * 60;
+                let y = waveY + ent.offsetY;
+
+                ctx.save();
+                ctx.translate(ent.x, y);
+
+                if (ent.type === 'timer') {
+                    ctx.font = `bold 16px 'Courier New', monospace`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#ff3b30';
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = '#ff3b30';
+                    ctx.fillText('30s', 0, 0);
+                } else if (ent.type === 'coin') {
+                    ctx.fillStyle = '#ffd000';
+                    ctx.shadowBlur = 14;
+                    ctx.shadowColor = '#ffd000';
+                    ctx.fillRect(-ent.size / 2, -ent.size / 2, ent.size, ent.size);
+                    ctx.fillStyle = '#081636';
+                    ctx.fillRect(-ent.size / 4, -ent.size / 4, ent.size / 2, ent.size / 2);
+                } else if (ent.type === 'pixel') {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#ffffff';
+                    ctx.fillRect(-4, -4, 8, 8);
+                }
+
+                ctx.restore();
+
+                if (ent.x < -60) rpgEntities.splice(i, 1);
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.8, 0, 'rgba(10, 35, 90, 0)', 'rgba(18, 55, 140, 0.32)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.2, 2, 'rgba(40, 120, 40, 0)', 'rgba(56, 160, 48, 0.20)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 2.0) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.6 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#ffd000';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ffd000';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.006;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
