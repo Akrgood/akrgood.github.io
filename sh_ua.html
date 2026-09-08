@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Hill (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Silent Hill (PS1) українською мовою для PSP. Класика психологічного горору про пошуки Шеріл у туманному місті. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="Silent Hill PSP, Silent Hill 1 українською, Silent Hill PS1 на PSP, PSP_UA, akrgood, psp ігри українською, хоррор на psp, Гаррі Мейсон">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Silent Hill",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Survival Horror, Psychological Horror",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад оригінальної культової гри Silent Hill (PS1) для консолі PlayStation Portable (PSP) від akrgood та проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #08090b; font-family: 'Arial', sans-serif;
+            color: #c9d1d9; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #08090b;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.6s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px #8b949e);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #c9d1d9); }
+            100% { transform: scale(0.92); opacity: 0.7; }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(8, 9, 11, 0.88); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 450px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(139, 148, 158, 0.5));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(18, 20, 24, 0.88);
+            border: 3px solid #30363d;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(139, 148, 158, 0.1);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #6e7681;
+            box-shadow: 0 0 25px rgba(110, 118, 129, 0.4);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.6em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e6edf3;
+            text-shadow: 0 0 12px rgba(230, 237, 243, 0.6), 0 0 25px #21262d;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #8b949e;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(110, 118, 129, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #c9d1d9;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(201, 209, 217, 0.4);
+        }
+        .info-list a {
+            color: #8b949e;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #f0f6fc;
+            text-shadow: 0 0 12px #f0f6fc;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #30363d;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e6edf3;
+            text-shadow: 0 0 10px rgba(230, 237, 243, 0.5);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #f0f6fc;
+            background: rgba(22, 27, 34, 0.9);
+            border: 2px solid #6e7681;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(139, 148, 158, 0.15);
+        }
+        .dl-btn:hover {
+            background: #8b949e;
+            color: #08090b;
+            box-shadow: 0 0 30px #c9d1d9, 0 0 50px #30363d;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(18, 20, 24, 0.88);
+            border: 3px solid #30363d;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(139, 148, 158, 0.1);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #30363d;
+            padding-bottom: 15px;
+            color: #e6edf3;
+            text-shadow: 0 0 10px rgba(230, 237, 243, 0.5);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #30363d;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #8b949e;
+            box-shadow: 0 0 30px #8b949e;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #6e7681;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(18, 20, 24, 0.85);
+            box-shadow: 0 0 12px rgba(110, 118, 129, 0.4);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #8b949e; 
+            color: #08090b; 
+            box-shadow: 0 0 25px #c9d1d9; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/sh-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/sh-logo.png" alt="Silent Hill Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/sh-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Silent Hill (PS1)</h1>
+                
+                <p class="game-desc">Пориньте у витоки психологічного жаху в легендарній першій частині Silent Hill з PlayStation 1 на PSP із повним українським перекладом! Письменник Гаррі Мейсон вирушає на відпочинок разом зі своєю прийомною донькою Шеріл, але після аварії на в'їзді до курортного містечка Сайлент Хілл дівчинка безслідно зникає. Огорнуті вічним туманом вулиці, пластівці білого попелу, сирени, що сповіщають про настання кошмарного Альтернативного світу, та тріск кишенькового радіо — пройдіть культову історію рідною мовою будь-де та розкрийте темні таємниці стародавнього культу.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="#" target="_blank">Кіндрат Книш</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/fwan7k3nOzg?si=vazOfYjdiVasEC29" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1rH4t30dZuV6n3RAV_AWK8riJEyQLRJUK/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/sh-screen1.png" alt="Скріншот 1">
+                <img src="assets/sh-screen2.png" alt="Скріншот 2">
+                <img src="assets/sh-screen3.png" alt="Скріншот 3">
+                <img src="assets/sh-screen4.png" alt="Скріншот 4">
+                <img src="assets/sh-screen5.png" alt="Скріншот 5">
+                <img src="assets/sh-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let ashParticles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.25) {
+                ashParticles.push({
+                    x: Math.random() * (width + 100) - 50,
+                    y: -10,
+                    size: 1.2 + Math.random() * 2.8,
+                    speedY: 0.7 + Math.random() * 1.4,
+                    speedX: (Math.random() - 0.4) * 1.0,
+                    alpha: 0.3 + Math.random() * 0.5,
+                    swayPhase: Math.random() * Math.PI * 2
+                });
+            }
+
+            for (let i = ashParticles.length - 1; i >= 0; i--) {
+                let p = ashParticles[i];
+                p.y += p.speedY;
+                p.x += p.speedX + Math.sin(time * 1.5 + p.swayPhase) * 0.6;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(200, 205, 212, ${p.alpha})`;
+                ctx.shadowBlur = 6;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.4)';
+                ctx.fill();
+                ctx.restore();
+
+                if (p.y > height + 10 || p.x < -60 || p.x > width + 60) {
+                    ashParticles.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(22, 27, 34, 0)', 'rgba(48, 54, 61, 0.35)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(110, 118, 129, 0)', 'rgba(139, 148, 158, 0.20)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#c9d1d9';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 18;
+            ctx.shadowColor = '#c9d1d9';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
