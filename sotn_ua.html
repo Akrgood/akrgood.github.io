@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castlevania: Symphony of the Night (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Castlevania: Symphony of the Night українською мовою для PSP. Готичний шедевр про Алукарда у замку Дракули. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="Castlevania Symphony of the Night PSP, Castlevania українською, PSP_UA, akrgood, psp ігри українською, метroidvania psp, Алукард">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Castlevania: Symphony of the Night",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Metroidvania, Action RPG",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад культової гри Castlevania: Symphony of the Night для консолі PlayStation Portable (PSP) від akrgood та проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #060002; font-family: 'Georgia', serif;
+            color: #e6dcd8; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #060002;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 25px #c4001d);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 40px #ff1a3c); }
+            100% { transform: scale(0.92); opacity: 0.7; }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(8, 1, 3, 0.85); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 460px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 25px rgba(214, 0, 36, 0.7));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(18, 3, 7, 0.88);
+            border: 3px solid #8f0015;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(180, 0, 30, 0.2);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #c4001d;
+            box-shadow: 0 0 25px rgba(196, 0, 29, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.6em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff2a4b;
+            text-shadow: 0 0 12px #ff1a3c, 0 0 25px #63000d;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #d8cec9;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            text-align: justify;
+            font-family: 'Arial', sans-serif;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+            font-family: 'Arial', sans-serif;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(196, 0, 29, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ff3b56;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 42, 75, 0.6);
+        }
+        .info-list a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ff2a4b;
+            text-shadow: 0 0 15px #ff2a4b;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #8f0015;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff2a4b;
+            text-shadow: 0 0 10px #ff2a4b;
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(26, 4, 10, 0.9);
+            border: 2px solid #c4001d;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(196, 0, 29, 0.4), inset 0 0 10px rgba(196, 0, 29, 0.2);
+            font-family: 'Arial', sans-serif;
+        }
+        .dl-btn:hover {
+            background: #c4001d;
+            color: #fff;
+            box-shadow: 0 0 30px #ff1a3c, 0 0 50px #8f0015;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(18, 3, 7, 0.88);
+            border: 3px solid #8f0015;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 25px rgba(180, 0, 30, 0.2);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #8f0015;
+            padding-bottom: 15px;
+            color: #ff2a4b;
+            text-shadow: 0 0 10px #ff2a4b;
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #8f0015;
+            box-shadow: 0 0 15px rgba(196, 0, 29, 0.4);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ff2a4b;
+            box-shadow: 0 0 30px #ff2a4b;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ff2a4b;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #c4001d;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(18, 3, 7, 0.85);
+            box-shadow: 0 0 12px rgba(196, 0, 29, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-family: 'Arial', sans-serif;
+        }
+        .back-btn:hover { 
+            background: #c4001d; 
+            color: #ffffff; 
+            box-shadow: 0 0 25px #ff1a3c; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/sotn-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/sotn-logo.png" alt="Castlevania: Symphony of the Night Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/sotn-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Castlevania: Symphony of the Night</h1>
+                
+                <p class="game-desc">Прокиньтеся від вічного сну разом із напіввампіром Алукардом у безсмертному шедеврі Castlevania: Symphony of the Night, тепер із повноцінним українським перекладом для PSP з PS1! Через п'ять років після перемоги над Дракулою зникає легендарний мисливець Ріхтер Бельмонт, а над нічними лісами знову постає проклятий готичний замок. Досліджуйте заплутані галереї, збирайте артефакти, вивчайте закляття та киньте виклик володарю темряви рідною мовою в культовій класиці, яка назавжди змінила жанр метроїдваній.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="#" target="_blank">BakAI</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/Rm2KKmud2MA?si=GEBlQVi0xZSAPAot" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1nGwMBlzI3FA2cBwLlVKrRungvtjN5wyq/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/sotn-screen1.png" alt="Скріншот 1">
+                <img src="assets/sotn-screen2.png" alt="Скріншот 2">
+                <img src="assets/sotn-screen3.png" alt="Скріншот 3">
+                <img src="assets/sotn-screen4.png" alt="Скріншот 4">
+                <img src="assets/sotn-screen5.png" alt="Скріншот 5">
+                <img src="assets/sotn-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let bats = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawBloodMoon() {
+            let moonX = width * 0.76;
+            let moonY = height * 0.25;
+            let r = Math.min(width, height) * 0.17;
+
+            let haze = ctx.createRadialGradient(moonX, moonY, r * 0.75, moonX, moonY, r * 2.6);
+            haze.addColorStop(0, 'rgba(190, 10, 30, 0.38)');
+            haze.addColorStop(0.35, 'rgba(115, 0, 18, 0.20)');
+            haze.addColorStop(0.75, 'rgba(45, 0, 8, 0.06)');
+            haze.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = haze;
+            ctx.beginPath();
+            ctx.arc(moonX, moonY, r * 2.6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(moonX, moonY, r, 0, Math.PI * 2);
+            ctx.clip();
+
+            let baseGrad = ctx.createRadialGradient(moonX - r * 0.25, moonY - r * 0.25, r * 0.05, moonX, moonY, r);
+            baseGrad.addColorStop(0, '#eb2642');
+            baseGrad.addColorStop(0.45, '#a8051a');
+            baseGrad.addColorStop(0.8, '#54000b');
+            baseGrad.addColorStop(1, '#200004');
+            ctx.fillStyle = baseGrad;
+            ctx.fillRect(moonX - r, moonY - r, r * 2, r * 2);
+
+            let maria = [
+                { x: -0.25, y: -0.2, s: 0.45, a: 0.22 },
+                { x: -0.32, y: 0.15, s: 0.52, a: 0.20 },
+                { x: 0.12, y: -0.32, s: 0.42, a: 0.18 },
+                { x: 0.24, y: -0.05, s: 0.48, a: 0.24 },
+                { x: 0.08, y: 0.22, s: 0.44, a: 0.20 },
+                { x: -0.08, y: 0.38, s: 0.36, a: 0.16 },
+                { x: 0.32, y: 0.28, s: 0.34, a: 0.14 }
+            ];
+
+            for (let i = 0; i < maria.length; i++) {
+                let m = maria[i];
+                let mx = moonX + m.x * r;
+                let my = moonY + m.y * r;
+                let mr = m.s * r;
+                let spot = ctx.createRadialGradient(mx, my, 0, mx, my, mr);
+                spot.addColorStop(0, `rgba(18, 0, 4, ${m.a * 1.5})`);
+                spot.addColorStop(0.6, `rgba(32, 0, 7, ${m.a * 0.8})`);
+                spot.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = spot;
+                ctx.beginPath();
+                ctx.arc(mx, my, mr, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            let limb = ctx.createRadialGradient(moonX, moonY, r * 0.72, moonX, moonY, r);
+            limb.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            limb.addColorStop(0.85, 'rgba(25, 0, 5, 0.45)');
+            limb.addColorStop(1, 'rgba(10, 0, 2, 0.9)');
+            ctx.fillStyle = limb;
+            ctx.fillRect(moonX - r, moonY - r, r * 2, r * 2);
+
+            ctx.restore();
+
+            ctx.beginPath();
+            ctx.arc(moonX, moonY, r, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 60, 80, 0.35)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        function drawCastle() {
+            ctx.save();
+            ctx.fillStyle = '#040002';
+            let baseY = height * 0.88;
+
+            ctx.beginPath();
+            ctx.moveTo(0, height);
+            ctx.lineTo(0, baseY);
+
+            ctx.lineTo(width * 0.05, baseY - 40);
+            ctx.lineTo(width * 0.05, baseY - 120);
+            ctx.lineTo(width * 0.065, baseY - 160);
+            ctx.lineTo(width * 0.08, baseY - 120);
+            ctx.lineTo(width * 0.08, baseY - 40);
+
+            ctx.lineTo(width * 0.14, baseY - 50);
+            ctx.lineTo(width * 0.14, baseY - 200);
+            ctx.lineTo(width * 0.155, baseY - 260);
+            ctx.lineTo(width * 0.17, baseY - 200);
+            ctx.lineTo(width * 0.17, baseY - 30);
+
+            ctx.lineTo(width * 0.23, baseY - 20);
+            ctx.lineTo(width * 0.25, baseY - 90);
+            ctx.lineTo(width * 0.28, baseY - 90);
+            ctx.lineTo(width * 0.30, baseY - 30);
+
+            ctx.lineTo(width * 0.40, baseY);
+            ctx.lineTo(width * 0.60, baseY);
+
+            ctx.lineTo(width * 0.68, baseY - 40);
+            ctx.lineTo(width * 0.70, baseY - 140);
+            ctx.lineTo(width * 0.715, baseY - 220);
+            ctx.lineTo(width * 0.73, baseY - 140);
+            ctx.lineTo(width * 0.75, baseY - 40);
+
+            ctx.lineTo(width * 0.80, baseY - 60);
+            ctx.lineTo(width * 0.82, baseY - 280);
+            ctx.lineTo(width * 0.84, baseY - 360);
+            ctx.lineTo(width * 0.86, baseY - 280);
+            ctx.lineTo(width * 0.88, baseY - 80);
+
+            ctx.lineTo(width * 0.93, baseY - 110);
+            ctx.lineTo(width * 0.945, baseY - 170);
+            ctx.lineTo(width * 0.96, baseY - 110);
+            ctx.lineTo(width, baseY - 30);
+
+            ctx.lineTo(width, height);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(214, 0, 36, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            drawBloodMoon();
+            drawCastle();
+
+            if (Math.random() < 0.04) {
+                bats.push({
+                    x: width + 50,
+                    y: height * 0.15 + Math.random() * (height * 0.55),
+                    vx: -(2.5 + Math.random() * 3.5),
+                    vy: (Math.random() - 0.5) * 1.5,
+                    size: 14 + Math.random() * 16,
+                    wingSpeed: 10 + Math.random() * 8,
+                    wingPhase: Math.random() * Math.PI * 2
+                });
+            }
+
+            for (let i = bats.length - 1; i >= 0; i--) {
+                let b = bats[i];
+                b.x += b.vx;
+                b.y += b.vy + Math.sin(time * 2 + b.wingPhase) * 0.8;
+
+                let wing = Math.sin(time * b.wingSpeed + b.wingPhase);
+
+                ctx.save();
+                ctx.translate(b.x, b.y);
+                ctx.fillStyle = '#0a0003';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'rgba(255, 26, 60, 0.6)';
+
+                ctx.beginPath();
+                ctx.arc(0, 0, b.size * 0.16, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.quadraticCurveTo(b.size * 0.5, -b.size * 0.7 * wing, b.size, -b.size * 0.2 * wing);
+                ctx.quadraticCurveTo(b.size * 0.5, b.size * 0.1 * wing, 0, b.size * 0.2);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.quadraticCurveTo(-b.size * 0.5, -b.size * 0.7 * wing, -b.size, -b.size * 0.2 * wing);
+                ctx.quadraticCurveTo(-b.size * 0.5, b.size * 0.1 * wing, 0, b.size * 0.2);
+                ctx.fill();
+
+                ctx.restore();
+
+                if (b.x < -60) bats.splice(i, 1);
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(110, 0, 16, 0)', 'rgba(143, 0, 21, 0.32)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(196, 0, 29, 0)', 'rgba(214, 0, 36, 0.20)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#ff1a3c';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff1a3c';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
