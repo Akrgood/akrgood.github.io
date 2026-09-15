@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arthur and the Invisibles (RU) - PSP_RU</title>
+    
+    <meta name="description" content="Скачать Arthur and the Invisibles на русском языке для PSP. Сказочное приключение Артура в микромире минипутов. Перевод от akrgood и проекта PSP_RU.">
+    <meta name="keywords" content="Arthur and the Invisibles PSP, Артур и минипуты на русском, Arthur and the Minimoys PSP, PSP_RU, akrgood, psp игры на русском, приключения на psp">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Arthur and the Invisibles",
+      "alternateName": "Arthur and the Minimoys",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Action, Adventure, Platformer",
+      "inLanguage": "ru",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Полный русский перевод волшебной приключенческой игры Arthur and the Invisibles для консоли PlayStation Portable (PSP) от akrgood и проекта PSP_RU."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #060e03; font-family: 'Arial', sans-serif;
+            color: #e4edd8; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #060e03;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px #88ff00);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 20px #a6ff00); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #ffd700); }
+            100% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 20px #a6ff00); }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(6, 15, 4, 0.88); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 460px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 22px rgba(166, 255, 0, 0.7)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.4));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(12, 26, 8, 0.88);
+            border: 3px solid #84cc00;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(132, 204, 0, 0.35), inset 0 0 25px rgba(255, 215, 0, 0.15);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.6em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a6ff00;
+            text-shadow: 0 0 12px rgba(166, 255, 0, 0.8), 0 0 25px #ffd700;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #d8e6cb;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(166, 255, 0, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ffd700;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+        }
+        .info-list a {
+            color: #e4edd8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #a6ff00;
+            text-shadow: 0 0 12px #a6ff00;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #84cc00;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #060e03;
+            background: #a6ff00;
+            border: 2px solid #ffd700;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(166, 255, 0, 0.4), inset 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+        .dl-btn:hover {
+            background: #ffd700;
+            color: #060e03;
+            box-shadow: 0 0 30px #ffd700, 0 0 45px #a6ff00;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(12, 26, 8, 0.88);
+            border: 3px solid #84cc00;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(132, 204, 0, 0.35), inset 0 0 25px rgba(255, 215, 0, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #84cc00;
+            padding-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #84cc00;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ffd700;
+            box-shadow: 0 0 30px #a6ff00;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #a6ff00;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #84cc00;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(12, 26, 8, 0.9);
+            box-shadow: 0 0 12px rgba(132, 204, 0, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #a6ff00; 
+            color: #060e03; 
+            box-shadow: 0 0 25px #ffd700; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/arthur-logo.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspru.html" class="back-btn">← Назад</a>
+
+        <img src="assets/arthur-logo.png" alt="Arthur and the Invisibles Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/arthur-coveru.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Arthur and the Invisibles</h1>
+                
+                <p class="game-desc">Что ж, спустя два месяца усердной работы я совместно с sklad.akrgooda представляю вам свой полноценный перенос русской локализации из ПК версии игры "Артур и минипуты" на PSP версию игры. В своё время версия для PSP не получила русский перевод, а если и получила, то кривой пиратский, и вот, вы уже сейчас можете с удовольствием перепройти а может даже пройти впервые данную игру с качественной русской локализацией! За основу был взята PC версия игры "Артур и минипуты" от "Акелла" и европейская PSP версия "Arthur and the Invisibles". Была портирована озвучка а так же субтитры. Работа над текстом - iamfeelingbad. Ромхакинг - iamfeelingbad, akrgood. Работа над озвучкой - iamfeelingbad, так же спасибо отдельное DruchaPucha за помощь с файлами озвучки. Шрифты - akrgood.</p>
+
+                <ul class="info-list">
+                    <li><span>Модификация:</span> Портирование русского текстового перевода и озвучки от Акелла</li>
+                    <li><span>Оригинальный перевод:</span> <a href="https://iamfeelingbad.T.ME" target="_blank">iamfeelingbad</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/KnZAR0I8sxY?si=X1pq9IAStPQMekNk" target="_blank">Смотреть видео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Ссылка на загрузку</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1KK14nBMTvUWCjw7q1XCg-m8T65U1B91B/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скриншоты</h2>
+            <div class="screenshots-grid">
+                <img src="assets/arthur-screen1ru.png" alt="Скриншот 1">
+                <img src="assets/arthur-screen2ru.png" alt="Скриншот 2">
+                <img src="assets/arthur-screen3ru.png" alt="Скриншот 3">
+                <img src="assets/arthur-screen4ru.png" alt="Скриншот 4">
+                <img src="assets/arthur-screen5ru.png" alt="Скриншот 5">
+                <img src="assets/arthur-screen6ru.png" alt="Скриншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let fluffs = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function drawFluff(f) {
+            ctx.save();
+            ctx.translate(f.x, f.y);
+            ctx.rotate(f.angle);
+
+            let glowGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, f.size * 1.6);
+            glowGrad.addColorStop(0, `rgba(255, 225, 50, ${f.alpha * 0.85})`);
+            glowGrad.addColorStop(0.4, `rgba(180, 255, 30, ${f.alpha * 0.45})`);
+            glowGrad.addColorStop(1, 'rgba(120, 220, 0, 0)');
+            ctx.fillStyle = glowGrad;
+            ctx.beginPath();
+            ctx.arc(0, 0, f.size * 1.6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = `rgba(255, 235, 100, ${f.alpha * 0.75})`;
+            for (let i = 0; i < f.hairs; i++) {
+                let hairAngle = (Math.PI * 2 / f.hairs) * i;
+                let hLen = f.size * (0.75 + Math.sin(time * 3 + i) * 0.25);
+                let hx = Math.cos(hairAngle) * hLen;
+                let hy = Math.sin(hairAngle) * hLen;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(hx, hy);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(hx, hy, 1.4, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 245, 140, ${f.alpha * 0.9})`;
+                ctx.fill();
+            }
+
+            ctx.beginPath();
+            ctx.arc(0, 0, f.size * 0.28, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 250, 180, ${f.alpha})`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ffd700';
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.08) {
+                fluffs.push({
+                    x: Math.random() * (width + 60) - 30,
+                    y: height + 30,
+                    size: 9 + Math.random() * 11,
+                    speedY: 0.7 + Math.random() * 1.1,
+                    speedX: (Math.random() - 0.45) * 0.8,
+                    alpha: 0.4 + Math.random() * 0.55,
+                    swayPhase: Math.random() * Math.PI * 2,
+                    angle: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.025,
+                    hairs: 8 + Math.floor(Math.random() * 5)
+                });
+            }
+
+            for (let i = fluffs.length - 1; i >= 0; i--) {
+                let f = fluffs[i];
+                f.y -= f.speedY;
+                f.x += f.speedX + Math.sin(time * 1.6 + f.swayPhase) * 0.8;
+                f.angle += f.rotSpeed;
+
+                drawFluff(f);
+
+                if (f.y < -40 || f.x < -60 || f.x > width + 60) {
+                    fluffs.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(40, 90, 10, 0)', 'rgba(75, 150, 15, 0.28)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(166, 255, 0, 0)', 'rgba(215, 230, 20, 0.18)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#a6ff00';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#a6ff00';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
