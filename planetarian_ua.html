@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetarian: The Reverie of a Little Planet (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Planetarian: The Reverie of a Little Planet українською мовою для PSP. Зворушлива постапокаліптична візуальна новела від Key. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="Planetarian PSP, Planetarian українською, Planetarian Chiisana Hoshi no Yume PSP, PSP_UA, akrgood, psp ігри українською, візуальна новела psp, Key">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Planetarian: The Reverie of a Little Planet",
+      "alternateName": "Planetarian: Chiisana Hoshi no Yume",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Visual Novel, Sci-Fi, Drama",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад зворушливої науково-фантастичної візуальної новели Planetarian: The Reverie of a Little Planet для консолі PlayStation Portable (PSP) від akrgood та проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #030611; font-family: 'Arial', sans-serif;
+            color: #dce7f5; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #030611;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.6s infinite ease-in-out;
+            filter: drop-shadow(0 0 22px #4fc3f7);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #0288d1); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #80d8ff) drop-shadow(0 0 45px #ffe082); }
+            100% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #0288d1); }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(4, 8, 22, 0.88); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 460px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 22px rgba(79, 195, 247, 0.6)) drop-shadow(0 0 35px rgba(255, 224, 130, 0.35));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(8, 16, 38, 0.88);
+            border: 3px solid #1976d2;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(2, 136, 209, 0.35), inset 0 0 25px rgba(128, 216, 255, 0.15);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #4fc3f7;
+            box-shadow: 0 0 25px rgba(79, 195, 247, 0.45);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.5em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #80d8ff;
+            text-shadow: 0 0 12px rgba(128, 216, 255, 0.8), 0 0 25px #0288d1;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #c9d8ee;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(79, 195, 247, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ffe082;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 224, 130, 0.6);
+        }
+        .info-list a {
+            color: #dce7f5;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #4fc3f7;
+            text-shadow: 0 0 12px #4fc3f7;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #1976d2;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #80d8ff;
+            text-shadow: 0 0 10px rgba(128, 216, 255, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #030611;
+            background: #4fc3f7;
+            border: 2px solid #80d8ff;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.4), inset 0 0 10px rgba(255, 224, 130, 0.2);
+        }
+        .dl-btn:hover {
+            background: #ffe082;
+            color: #030611;
+            border-color: #ffd54f;
+            box-shadow: 0 0 30px #ffe082, 0 0 45px #4fc3f7;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(8, 16, 38, 0.88);
+            border: 3px solid #1976d2;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(2, 136, 209, 0.35), inset 0 0 25px rgba(128, 216, 255, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #1976d2;
+            padding-bottom: 15px;
+            color: #80d8ff;
+            text-shadow: 0 0 10px rgba(128, 216, 255, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #1976d2;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #80d8ff;
+            box-shadow: 0 0 30px #4fc3f7;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #80d8ff;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #1976d2;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(8, 16, 38, 0.9);
+            box-shadow: 0 0 12px rgba(2, 136, 209, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #4fc3f7; 
+            color: #030611; 
+            border-color: #80d8ff;
+            box-shadow: 0 0 25px #80d8ff; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/planetarian-logo.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/planetarian-logo.png" alt="Planetarian Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/planetarian-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Planetarian: The Reverie of a Little Planet</h1>
+                
+                <p class="game-desc">Пориньте у зворушливу та меланхолійну історію постапокаліпсису в культовій візуальній новелі Planetarian: The Reverie of a Little Planet від студії Key, тепер із повним українським перекладом для PSP! Минуло тридцять років після світової війни, яка перетворила міста на занедбані саркофаги під вічним радіоактивним дощем. Самітний мародер у пошуках цінностей проникає до купола напівзруйнованого універмагу, де на нього несподівано чекає Юмемі Хошіно — роботизована гід планетарію, яка терпляче провела десятиліття в очікуванні відвідувачів. Відновіть старий проєктор зоряного неба рідною мовою та доторкніться до вічного сяйва далеких зірок.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="#" target="_blank">akrgood</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/2ZkTXkLjRsw?si=CWJJyH5eGKcBNIXh" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1MsTPpj8L1UrdOSYgyOnUFnbAIPW4BLEM/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/planetarian-screen1.png" alt="Скріншот 1">
+                <img src="assets/planetarian-screen2.png" alt="Скріншот 2">
+                <img src="assets/planetarian-screen3.png" alt="Скріншот 3">
+                <img src="assets/planetarian-screen4.png" alt="Скріншот 4">
+                <img src="assets/planetarian-screen5.png" alt="Скріншот 5">
+                <img src="assets/planetarian-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let rainDrops = [];
+        let stars = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            let count = Math.floor((width * height) / 14000);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * (height * 0.7),
+                    size: 0.8 + Math.random() * 2.2,
+                    alpha: 0.2 + Math.random() * 0.8,
+                    speed: 0.02 + Math.random() * 0.04,
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    isGolden: Math.random() < 0.25
+                });
+            }
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i];
+                let twinkle = 0.5 + Math.sin(time * 2.5 + s.twinklePhase) * 0.5;
+                let curAlpha = s.alpha * twinkle;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                if (s.isGolden) {
+                    ctx.fillStyle = `rgba(255, 230, 150, ${curAlpha})`;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#ffe082';
+                } else {
+                    ctx.fillStyle = `rgba(180, 230, 255, ${curAlpha})`;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#80d8ff';
+                }
+                ctx.fill();
+
+                if (s.size > 2.0 && twinkle > 0.7) {
+                    let rayLen = s.size * 2.4;
+                    ctx.strokeStyle = s.isGolden ? `rgba(255, 230, 150, ${curAlpha * 0.5})` : `rgba(180, 230, 255, ${curAlpha * 0.5})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(s.x - rayLen, s.y);
+                    ctx.lineTo(s.x + rayLen, s.y);
+                    ctx.moveTo(s.x, s.y - rayLen);
+                    ctx.lineTo(s.x, s.y + rayLen);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            if (Math.random() < 0.35) {
+                rainDrops.push({
+                    x: Math.random() * (width + 100),
+                    y: -30,
+                    len: 16 + Math.random() * 22,
+                    speedY: 7 + Math.random() * 6,
+                    speedX: -1.5,
+                    alpha: 0.15 + Math.random() * 0.25
+                });
+            }
+
+            for (let i = rainDrops.length - 1; i >= 0; i--) {
+                let r = rainDrops[i];
+                r.y += r.speedY;
+                r.x += r.speedX;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(r.x, r.y);
+                ctx.lineTo(r.x + r.speedX * 2.5, r.y + r.len);
+                ctx.strokeStyle = `rgba(128, 216, 255, ${r.alpha})`;
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+                ctx.restore();
+
+                if (r.y > height + 40 || r.x < -40) {
+                    rainDrops.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(10, 30, 75, 0)', 'rgba(25, 75, 160, 0.3)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(30, 120, 210, 0)', 'rgba(79, 195, 247, 0.2)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#80d8ff';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#4fc3f7';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
