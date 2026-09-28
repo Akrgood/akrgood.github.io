@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Rivals (UA) - PSP_UA</title>
+    
+    <meta name="description" content="Завантажити Sonic Rivals українською мовою для PSP. Шалені швидкісні дуелі Соніка, Шедоу, Сільвера та Наклза. Переклад від akrgood та проєкту PSP_UA.">
+    <meta name="keywords" content="Sonic Rivals PSP, Sonic Rivals українською, Sonic PSP, PSP_UA, akrgood, psp ігри українською, гонки сонік, платформер на psp">
+    <meta name="author" content="akrgood">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Sonic Rivals",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Racing, Platformer",
+      "inLanguage": "uk",
+      "author": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "akrgood"
+      },
+      "description": "Повний український переклад швидкісного змагального платформного екшену Sonic Rivals для консолі PlayStation Portable (PSP) від akrgood та проєкту PSP_UA."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #020817; font-family: 'Arial', sans-serif;
+            color: #e1ebf5; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #020817;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.3s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px #00a2ff);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #0066ff); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #00e1ff) drop-shadow(0 0 45px #ffcc00); }
+            100% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #0066ff); }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(2, 8, 23, 0.88); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 470px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 22px rgba(0, 162, 255, 0.7)) drop-shadow(0 0 35px rgba(255, 204, 0, 0.4));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(6, 16, 38, 0.88);
+            border: 3px solid #00a2ff;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 102, 255, 0.4), inset 0 0 25px rgba(255, 204, 0, 0.15);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #ffcc00;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.6em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #00d4ff;
+            text-shadow: 0 0 12px rgba(0, 212, 255, 0.8), 0 0 25px #0055ff;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #cfddec;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(0, 162, 255, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ffcc00;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+        }
+        .info-list a {
+            color: #e1ebf5;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 12px #00d4ff;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #00a2ff;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #020817;
+            background: #00d4ff;
+            border: 2px solid #ffcc00;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(255, 204, 0, 0.2);
+        }
+        .dl-btn:hover {
+            background: #ffcc00;
+            color: #020817;
+            border-color: #00d4ff;
+            box-shadow: 0 0 30px #ffcc00, 0 0 45px #00d4ff;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(6, 16, 38, 0.88);
+            border: 3px solid #00a2ff;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 102, 255, 0.4), inset 0 0 25px rgba(255, 204, 0, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #00a2ff;
+            padding-bottom: 15px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #00a2ff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ffcc00;
+            box-shadow: 0 0 30px #00d4ff;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #00a2ff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(6, 16, 38, 0.9);
+            box-shadow: 0 0 12px rgba(0, 102, 255, 0.5);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #00d4ff; 
+            color: #020817; 
+            border-color: #ffcc00;
+            box-shadow: 0 0 25px #00d4ff; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2.1em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/sonic-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspua.html" class="back-btn">← Назад</a>
+
+        <img src="assets/sonic-logo.png" alt="Sonic Rivals Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/sonic-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Sonic Rivals</h1>
+                
+                <p class="game-desc">Приготуйтеся до безкомпромісної надзвукової битви у динамічному 2.5D платформері Sonic Rivals для PSP, тепер із повним українським перекладом! Доктор Еґман Неґа за допомогою таємничого фотоапарата перетворює друзів Соніка на гральні карти, тож на кону стоїть порятунок усього світу. Обирайте свого фаворита — їжака Соніка, Шедоу, Сільвера з майбутнього чи єхидну Наклза — та змагайтеся пліч-о-пліч на запаморочливих трасах, сповнених мертвих петель, трамплінів і пасток. Використовуйте унікальні бойові вміння, атакуйте суперника на повній швидкості та дістаньтеся фінішу першим рідною мовою.</p>
+
+                <ul class="info-list">
+                    <li><span>Модифікація:</span> Переклад на Українську мову</li>
+                    <li><span>Оригінальний переклад:</span> <a href="https://gamebanana.com/mods/604620" target="_blank">tonyhedge</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/iPN0zTwI_7c?si=zDjIz7or-lXqXxpG" target="_blank">Дивитись відео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Посилання на завантаження</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1aqw6Ic10bHUFbNiKDtBoJB8Zwn4TV5iB/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скріншоти</h2>
+            <div class="screenshots-grid">
+                <img src="assets/sonic-screen1.png" alt="Скріншот 1">
+                <img src="assets/sonic-screen2.png" alt="Скріншот 2">
+                <img src="assets/sonic-screen3.png" alt="Скріншот 3">
+                <img src="assets/sonic-screen4.png" alt="Скріншот 4">
+                <img src="assets/sonic-screen5.png" alt="Скріншот 5">
+                <img src="assets/sonic-screen6.png" alt="Скріншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let rings = [];
+        let speedStreaks = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function drawGoldenRing(r) {
+            ctx.save();
+            ctx.translate(r.x, r.y);
+            ctx.scale(Math.cos(time * 6 + r.spinPhase), 1);
+
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = '#ffea00';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#ffcc00';
+
+            ctx.beginPath();
+            ctx.arc(0, 0, r.size, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, 0, r.size * 0.65, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawSpeedStreak(s) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(s.x, s.y);
+            ctx.lineTo(s.x - s.len, s.y);
+            ctx.strokeStyle = s.isCyan ? 'rgba(0, 225, 255, ' + s.alpha + ')' : 'rgba(255, 204, 0, ' + s.alpha + ')';
+            ctx.lineWidth = s.width;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = s.isCyan ? '#00e1ff' : '#ffcc00';
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.04) {
+                rings.push({
+                    x: width + 50,
+                    size: 11 + Math.random() * 6,
+                    speed: 3.5 + Math.random() * 3.5,
+                    offsetY: (Math.random() - 0.5) * 45,
+                    spinPhase: Math.random() * Math.PI * 2
+                });
+            }
+
+            if (Math.random() < 0.25) {
+                speedStreaks.push({
+                    x: width + 60,
+                    y: height * 0.45 + Math.random() * (height * 0.45),
+                    len: 50 + Math.random() * 90,
+                    width: 1.2 + Math.random() * 2.2,
+                    speed: 9 + Math.random() * 8,
+                    alpha: 0.35 + Math.random() * 0.5,
+                    isCyan: Math.random() < 0.75
+                });
+            }
+
+            for (let i = speedStreaks.length - 1; i >= 0; i--) {
+                let s = speedStreaks[i];
+                s.x -= s.speed;
+                drawSpeedStreak(s);
+                if (s.x < -150) {
+                    speedStreaks.splice(i, 1);
+                }
+            }
+
+            const neonWaveY = height * 0.65;
+
+            for (let i = rings.length - 1; i >= 0; i--) {
+                let r = rings[i];
+                r.x -= r.speed;
+
+                let waveNoise = Math.sin(r.x * 0.003 + time * 2.2) * 40 * 0.2;
+                r.y = neonWaveY + waveNoise + Math.sin(r.x * 0.002 + time * 1.8 + 4) * 60 + r.offsetY;
+
+                drawGoldenRing(r);
+
+                if (r.x < -60) {
+                    rings.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.9, 0, 'rgba(0, 70, 200, 0)', 'rgba(0, 102, 255, 0.32)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.4, 2, 'rgba(0, 180, 255, 0)', 'rgba(0, 225, 255, 0.22)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 2.2) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.8 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#00d4ff';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#00d4ff';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.006;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
