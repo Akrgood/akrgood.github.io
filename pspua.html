@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
     
     <title>PSP_UA - Ігри українською для PSP</title>
     
     <meta name="description" content="Офіційний хаб проєкту PSP_UA від akrgood. Каталог якісних перекладів та модифікацій класичних ігор для консолі PlayStation Portable (PSP) українською мовою.">
     <meta name="keywords" content="PSP_UA, akrgood, ігри українською для psp, переклад ігор psp, psp модифікації, локалізація ігор, ukrainian psp games">
     <meta name="author" content="akrgood">
+    <link rel="canonical" href="https://akrgood.github.io/pspua.html">
 
     <script type="application/ld+json">
     {
@@ -50,6 +52,7 @@
             letter-spacing: 8px; margin-bottom: 40px; margin-top: 20px;
             background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 50%, #505050 51%, #e0e0e0 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
         }
@@ -72,8 +75,11 @@
             display: flex; justify-content: center; align-items: center;
             text-decoration: none; overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-backdrop-filter: blur(5px);
             backdrop-filter: blur(5px);
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .grid-item::before {
@@ -103,7 +109,6 @@
             color: #888;
         }
 
-
         .back-btn {
             position: absolute;
             top: 20px;
@@ -116,7 +121,7 @@
             padding: 8px 15px;
             border-radius: 8px;
             background: rgba(0,0,0,0.5);
-            transition: all 0.3s;
+            transition: color 0.3s ease, border-color 0.3s ease;
         }
         .back-btn:hover { color: #fff; border-color: #fff; }
 
@@ -155,80 +160,82 @@
         <div class="header-title">PSP_UA</div>
 
         <div class="grid-container">
+            <!-- Первый ряд: загружается сразу с асинхронным декодированием -->
             <a href="silc_ua.html" class="grid-item">
-                <img src="assets/silc-cover-pspua.png" alt="Seen in Liberty City">
+                <img src="assets/silc-cover-pspua.png" alt="Seen in Liberty City" decoding="async">
             </a>
 
             <a href="pce_ua.html" class="grid-item">
-                <img src="assets/pce-cover-pspua.png" alt="Pac-Man Championship Edition">
+                <img src="assets/pce-cover-pspua.png" alt="Pac-Man Championship Edition" decoding="async">
             </a>
 
             <a href="sho_ua.html" class="grid-item">
-                <img src="assets/sho-cover-pspua.png" alt="Silent Hill Origins">
+                <img src="assets/sho-cover-pspua.png" alt="Silent Hill Origins" decoding="async">
             </a>
 
             <a href="lcs_ua.html" class="grid-item">
-                <img src="assets/lcs-cover-pspua.png" alt="Liberty City Stories">
+                <img src="assets/lcs-cover-pspua.png" alt="Liberty City Stories" decoding="async">
             </a>
 
             <a href="vcs_ua.html" class="grid-item">
-                <img src="assets/vcs-cover-pspua.png" alt="Vice City Stories">
+                <img src="assets/vcs-cover-pspua.png" alt="Vice City Stories" decoding="async">
             </a>
             
             <a href="sims2_ua.html" class="grid-item">
-                <img src="assets/sims2-cover-pspua.png" alt="Sims 2">
+                <img src="assets/sims2-cover-pspua.png" alt="Sims 2" decoding="async">
             </a>
             
+            <!-- Последующие ряды: отложенная загрузка loading="lazy" -->
             <a href="gowgos_ua.html" class="grid-item">
-                <img src="assets/gowgos-cover-pspua.png" alt="God of War: Ghost of Sparta">
+                <img src="assets/gowgos-cover-pspua.png" alt="God of War: Ghost of Sparta" loading="lazy" decoding="async">
             </a>
 
             <a href="cod_ua.html" class="grid-item">
-                <img src="assets/cod-cover-pspua.png" alt="Call of Duty: Roads to Victory">
+                <img src="assets/cod-cover-pspua.png" alt="Call of Duty: Roads to Victory" loading="lazy" decoding="async">
             </a>
 
             <a href="hmh_ua.html" class="grid-item">
-                <img src="assets/hmh-cover-pspua.png" alt="Half-Minute Hero">
+                <img src="assets/hmh-cover-pspua.png" alt="Half-Minute Hero" loading="lazy" decoding="async">
             </a>
 
             <a href="sotn_ua.html" class="grid-item">
-                <img src="assets/sotn-cover-pspua.png" alt="Castlevania: Symphony of the Night">
+                <img src="assets/sotn-cover-pspua.png" alt="Castlevania: Symphony of the Night" loading="lazy" decoding="async">
             </a>
 
             <a href="sh_ua.html" class="grid-item">
-                <img src="assets/sh-cover-pspua.png" alt="Silent Hill">
+                <img src="assets/sh-cover-pspua.png" alt="Silent Hill" loading="lazy" decoding="async">
             </a>
 
             <a href="rengoku2_ua.html" class="grid-item">
-                <img src="assets/rengoku2-cover-pspua.png" alt="Rengoku II: The Stairway to H.E.A.V.E.N.">
+                <img src="assets/rengoku2-cover-pspua.png" alt="Rengoku II: The Stairway to H.E.A.V.E.N." loading="lazy" decoding="async">
             </a>
             
             <a href="gowcoo_ua.html" class="grid-item">
-                <img src="assets/gowcoo-cover-pspua.png" alt="God of War: Chains of Olympus">
+                <img src="assets/gowcoo-cover-pspua.png" alt="God of War: Chains of Olympus" loading="lazy" decoding="async">
             </a>
 
             <a href="ducati_ua.html" class="grid-item">
-                <img src="assets/ducati-cover-pspua.png" alt="Ducati Challenge">
+                <img src="assets/ducati-cover-pspua.png" alt="Ducati Challenge" loading="lazy" decoding="async">
             </a>
 
             <a href="arthur_ua.html" class="grid-item">
-                <img src="assets/arthur-cover-pspua.png" alt="Arthur and the Invisibles">
+                <img src="assets/arthur-cover-pspua.png" alt="Arthur and the Invisibles" loading="lazy" decoding="async">
             </a>
 
             <a href="planetarian_ua.html" class="grid-item">
-                <img src="assets/planetarian-cover-pspua.png" alt="Planetarian The Reverie of a Little Planet">
+                <img src="assets/planetarian-cover-pspua.png" alt="Planetarian The Reverie of a Little Planet" loading="lazy" decoding="async">
             </a>
 
             <a href="mhp3rd_ua.html" class="grid-item">
-                <img src="assets/mhp3rd-cover-pspua.png" alt="Monster Hunter Portable 3rd">
+                <img src="assets/mhp3rd-cover-pspua.png" alt="Monster Hunter Portable 3rd" loading="lazy" decoding="async">
             </a>
 
             <a href="sonic_ua.html" class="grid-item">
-                <img src="assets/sonic-cover-pspua.png" alt="Sonic Rivals">
+                <img src="assets/sonic-cover-pspua.png" alt="Sonic Rivals" loading="lazy" decoding="async">
             </a>
 
             <a href="dstoa_ua.html" class="grid-item">
-                <img src="assets/dstoa-cover-pspua.png" alt="Dungeon Siege: Throne of Agony">
+                <img src="assets/dstoa-cover-pspua.png" alt="Dungeon Siege: Throne of Agony" loading="lazy" decoding="async">
             </a>
 
             <a href="#" class="grid-item"></a>
@@ -252,56 +259,110 @@
 
     <script>
         const canvas = document.getElementById('psp-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, time = 0;
+        // alpha: false отключает лишнее композитное смешивание на GPU
+        const ctx = canvas.getContext('2d', { alpha: false });
+        
+        let width = 0;
+        let height = 0;
+        let time = 0;
+        let lastTime = performance.now();
+        let animationFrameId = null;
+
+        // Предварительно кэшированные градиенты и параметры волн
+        let bgGradient, wave1Gradient, wave2Gradient;
+        let wave1Y, wave2Y, neonWaveY;
+
+        function updateGradients() {
+            bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+            bgGradient.addColorStop(0, '#1c1c1c'); 
+            bgGradient.addColorStop(1, '#050505');
+
+            wave1Y = height * 0.65;
+            wave1Gradient = ctx.createLinearGradient(0, wave1Y - 240, 0, wave1Y + 240);
+            wave1Gradient.addColorStop(0, 'rgba(150, 150, 150, 0)');
+            wave1Gradient.addColorStop(0.5, 'rgba(200, 200, 200, 0.08)');
+            wave1Gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            wave2Y = height * 0.60;
+            wave2Gradient = ctx.createLinearGradient(0, wave2Y - 180, 0, wave2Y + 180);
+            wave2Gradient.addColorStop(0, 'rgba(255, 255, 255, 0.03)');
+            wave2Gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.15)');
+            wave2Gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            neonWaveY = height * 0.55;
+        }
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            updateGradients();
         }
-        window.addEventListener('resize', resize);
+
+        window.addEventListener('resize', resize, { passive: true });
         resize();
 
-        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, fillStyle) {
             ctx.beginPath();
-            for (let x = 0; x <= width + 20; x += 10) {
-                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
-                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+            const endX = width + 20;
+            for (let x = 0; x <= endX; x += 10) {
+                const noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                const y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
                 if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
-            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
-            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
-            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
-            ctx.fillStyle = gradient; ctx.fill();
+            ctx.lineTo(width, height + 100);
+            ctx.lineTo(0, height + 100);
+            ctx.closePath();
+            ctx.fillStyle = fillStyle;
+            ctx.fill();
         }
 
-        function animate() {
-            let bgGradient = ctx.createLinearGradient(0, 0, 0, height);
-            bgGradient.addColorStop(0, '#1c1c1c'); 
-            bgGradient.addColorStop(1, '#050505');
-            ctx.fillStyle = bgGradient; ctx.fillRect(0, 0, width, height);
-            
-            const wave1Y = height * 0.65;
-            const wave2Y = height * 0.60;
-            const neonWaveY = height * 0.55;
-            
-            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(150, 150, 150, 0)', 'rgba(200, 200, 200, 0.08)');
-            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(255, 255, 255, 0.03)', 'rgba(255, 255, 255, 0.15)');
-            
+        function render(now) {
+            // Нормализация по времени для плавной работы на экранах 60/120/144+ Гц
+            const delta = Math.min((now - lastTime) / 16.6667, 3);
+            lastTime = now;
+            time += 0.005 * delta;
+
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, width, height);
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, wave1Gradient);
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, wave2Gradient);
+
+            // Неоновая линия
             ctx.beginPath();
-            for (let x = 0; x <= width + 20; x += 10) {
-                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
-                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+            const endX = width + 20;
+            for (let x = 0; x <= endX; x += 10) {
+                const noise = Math.sin(x * 0.003 + time * 1.8) * 8; // 40 * 0.2
+                const y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
                 if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; 
-            ctx.lineWidth = 3; ctx.lineCap = 'round';
-            ctx.shadowBlur = 15; ctx.shadowColor = 'rgba(255, 255, 255, 0.6)'; 
-            ctx.stroke(); ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.6)';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
 
-            time += 0.005; requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(render);
         }
-        animate();
+
+        // Приостановка рендеринга при неактивной вкладке для экономии ресурсов и батареи
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            } else {
+                lastTime = performance.now();
+                if (!animationFrameId) {
+                    animationFrameId = requestAnimationFrame(render);
+                }
+            }
+        });
+
+        animationFrameId = requestAnimationFrame(render);
     </script>
 </body>
 </html>
