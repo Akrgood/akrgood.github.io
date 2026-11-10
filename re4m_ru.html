@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Evil 4 Mobile Edition (RU) - PSP_RU</title>
+    
+    <meta name="description" content="Скачать Resident Evil 4 Mobile Edition на русском языке для PSP. Неофициальный нативный порт мобильного шедевра с iOS от iamfeelingbad с русской локализацией от sklad.akrgooda.">
+    <meta name="keywords" content="Resident Evil 4 Mobile Edition PSP, RE4 Mobile PSP, Леон Кеннеди, Resident Evil на русском, iamfeelingbad, sklad.akrgooda, PSP_RU, psp игры на русском, хоррор на psp">
+    <meta name="author" content="sklad.akrgooda">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Resident Evil 4 Mobile Edition",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Survival Horror, Third-Person Shooter",
+      "inLanguage": "ru",
+      "author": {
+        "@type": "Person",
+        "name": "iamfeelingbad"
+      },
+      "translator": {
+        "@type": "Person",
+        "name": "sklad.akrgooda"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PSP_RU"
+      },
+      "description": "Порт игры Resident Evil 4 Mobile Edition с iOS для PlayStation Portable от iamfeelingbad с полной русской локализацией от sklad.akrgooda."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #060302; font-family: 'Arial', sans-serif;
+            color: #d6cbc2; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #060302;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.4s infinite ease-in-out;
+            filter: drop-shadow(0 0 25px #b31000);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #6b0a00); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #e52207) drop-shadow(0 0 45px #ff5100); }
+            100% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #6b0a00); }
+        }
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; 
+            z-index: -2;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(7, 3, 2, 0.89); 
+            z-index: -1;
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 480px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 24px rgba(229, 34, 7, 0.75)) drop-shadow(0 0 35px rgba(0, 0, 0, 0.9));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(18, 9, 6, 0.9);
+            border: 3px solid #7a1506;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(229, 34, 7, 0.18);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #b31000;
+            box-shadow: 0 0 25px rgba(179, 16, 0, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.3em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #e52207;
+            text-shadow: 0 0 12px rgba(229, 34, 7, 0.8), 0 0 25px #4d0500;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #c7bbb0;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(179, 16, 0, 0.45);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #e52207;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(229, 34, 7, 0.6);
+        }
+        .info-list a {
+            color: #e6ded7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ff3c24;
+            text-shadow: 0 0 12px #ff3c24;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #7a1506;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e52207;
+            text-shadow: 0 0 10px rgba(229, 34, 7, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(26, 7, 4, 0.95);
+            border: 2px solid #b31000;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(179, 16, 0, 0.4), inset 0 0 10px rgba(77, 5, 0, 0.3);
+        }
+        .dl-btn:hover {
+            background: #b31000;
+            color: #ffffff;
+            border-color: #ff3c24;
+            box-shadow: 0 0 30px #e52207, 0 0 50px #5e0800;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(18, 9, 6, 0.9);
+            border: 3px solid #7a1506;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(229, 34, 7, 0.18);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #7a1506;
+            padding-bottom: 15px;
+            color: #e52207;
+            text-shadow: 0 0 10px rgba(229, 34, 7, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #7a1506;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #e52207;
+            box-shadow: 0 0 30px #e52207;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #e52207;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #7a1506;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(18, 9, 6, 0.9);
+            box-shadow: 0 0 12px rgba(122, 21, 6, 0.6);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #b31000; 
+            color: #ffffff; 
+            border-color: #e52207;
+            box-shadow: 0 0 25px #e52207; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/re4m-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspru.html" class="back-btn">← Назад</a>
+
+        <img src="assets/re4m-logo.png" alt="Resident Evil 4 Mobile Edition Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/re4m-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Resident Evil 4 Mobile Edition</h1>
+                
+                <p class="game-desc">Специальный агент Леон С. Кеннеди отправляется в мрачную испанскую глушь на поиски похищенной президентской дочери Эшли Грэм в легендарной Resident Evil 4 Mobile Edition, перенесенной с iOS прямо на железо PlayStation Portable! Этот порт получил полноценное нативное управление с аналоговым стиком и кнопками PSP, переработанный рендер без графических артефактов и полную русскую локализацию. Сражайтесь с ордами зараженных сектантов Los Ganados, спасайтесь от бензопилы культового доктора Сальвадора, грамотно распределяйте скудные припасы в фирменном чемодане-инвентаре и переживите классический сурвайвал-хоррор в карманном формате в любое время и в любом месте.</p>
+
+                <ul class="info-list">
+                    <li><span>Модификация:</span> Нативный порт с iOS + Русский перевод</li>
+                    <li><span>Портирование на PSP:</span> <a href="https://iamfeelingbad.T.ME" target="_blank">iamfeelingbad</a></li>
+                    <li><span>Перевод на русский:</span> <a href="https://akrggxd.T.ME" target="_blank">sklad.akrgooda</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="#" target="_blank">Смотреть видео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Ссылка на загрузку</h2>
+                    <div class="download-buttons">
+                        <a href="#" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скриншоты</h2>
+            <div class="screenshots-grid">
+                <img src="assets/re4m-screen1ru.png" alt="Скриншот 1">
+                <img src="assets/re4m-screen2.png" alt="Скриншот 2">
+                <img src="assets/re4m-screen3ru.png" alt="Скриншот 3">
+                <img src="assets/re4m-screen4ru.png" alt="Скриншот 4">
+                <img src="assets/re4m-screen5ru.png" alt="Скриншот 5">
+                <img src="assets/re4m-screen6ru.png" alt="Скриншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let embers = [];
+        let lasers = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function drawLaser(l) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(l.x1, l.y1);
+            ctx.lineTo(l.x2, l.y2);
+            ctx.strokeStyle = `rgba(255, 30, 0, ${l.alpha})`;
+            ctx.lineWidth = l.width;
+            ctx.shadowBlur = 14;
+            ctx.shadowColor = '#ff2200';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(l.x2, l.y2, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 120, 100, ${l.alpha})`;
+            ctx.shadowBlur = 16;
+            ctx.shadowColor = '#ff3300';
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.16) {
+                embers.push({
+                    x: Math.random() * width,
+                    y: height + 20,
+                    size: 1.4 + Math.random() * 2.8,
+                    speedY: 1.1 + Math.random() * 1.8,
+                    speedX: (Math.random() - 0.5) * 1.1,
+                    alpha: 0.4 + Math.random() * 0.6,
+                    decay: 0.004 + Math.random() * 0.007,
+                    isAsh: Math.random() < 0.35
+                });
+            }
+
+            for (let i = embers.length - 1; i >= 0; i--) {
+                let e = embers[i];
+                e.y -= e.speedY;
+                e.x += e.speedX + Math.sin(time * 2 + e.y * 0.015) * 0.7;
+                e.alpha -= e.decay;
+
+                if (e.alpha <= 0 || e.y < -20) {
+                    embers.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+                if (e.isAsh) {
+                    ctx.fillStyle = `rgba(180, 165, 155, ${e.alpha * 0.7})`;
+                    ctx.shadowBlur = 4;
+                    ctx.shadowColor = '#807065';
+                } else {
+                    ctx.fillStyle = `rgba(229, 34, 7, ${e.alpha})`;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#b31000';
+                }
+                ctx.fill();
+                ctx.restore();
+            }
+
+            if (Math.random() < 0.02) {
+                let startY = height * 0.3 + Math.random() * (height * 0.45);
+                lasers.push({
+                    x1: -50,
+                    y1: startY - (Math.random() - 0.5) * 40,
+                    x2: width * (0.4 + Math.random() * 0.55),
+                    y2: startY + (Math.random() - 0.5) * 60,
+                    alpha: 0.6 + Math.random() * 0.3,
+                    width: 1.2 + Math.random() * 1.2,
+                    life: 25 + Math.floor(Math.random() * 25)
+                });
+            }
+
+            for (let i = lasers.length - 1; i >= 0; i--) {
+                let l = lasers[i];
+                drawLaser(l);
+                l.life--;
+                l.alpha -= 0.02;
+                if (l.life <= 0 || l.alpha <= 0) {
+                    lasers.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(60, 10, 4, 0)', 'rgba(122, 21, 6, 0.35)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(179, 16, 0, 0)', 'rgba(229, 34, 7, 0.22)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#e52207';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#e52207';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
