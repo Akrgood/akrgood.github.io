@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>God of War: Betrayal (RU) - PSP_RU</title>
+    
+    <meta name="description" content="Скачать God of War: Betrayal на русском языке для PSP. Нативный порт легендарного 2D-экшена о Кратосе с полной русской локализацией от sklad.akrgooda.">
+    <meta name="keywords" content="God of War Betrayal PSP, God of War Betrayal на русском, Кратос PSP, sklad.akrgooda, PSP_RU, PSP_UA, PSPORT, psp игры на русском, экшен на psp">
+    <meta name="author" content="sklad.akrgooda">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "God of War: Betrayal",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Action, Hack and Slash, Platformer",
+      "inLanguage": "ru",
+      "author": {
+        "@type": "Person",
+        "name": "sklad.akrgooda"
+      },
+      "translator": {
+        "@type": "Person",
+        "name": "sklad.akrgooda"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PSP_RU"
+      },
+      "description": "Нативный порт игры God of War: Betrayal для PlayStation Portable с полной русской локализацией от sklad.akrgooda."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #070202; font-family: 'Arial', sans-serif;
+            color: #e6d8d3; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #070202;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.4s infinite ease-in-out;
+            filter: drop-shadow(0 0 25px #c91414);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #7a0808); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #e61919) drop-shadow(0 0 45px #e69d24); }
+            100% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #7a0808); }
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 480px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 24px rgba(217, 22, 22, 0.75)) drop-shadow(0 0 35px rgba(230, 157, 36, 0.35));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(20, 6, 6, 0.9);
+            border: 3px solid #991111;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(217, 22, 22, 0.18);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #d48c1c;
+            box-shadow: 0 0 25px rgba(212, 140, 28, 0.45);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.3em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #e61e1e;
+            text-shadow: 0 0 12px rgba(230, 30, 30, 0.8), 0 0 25px #590606;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #d6c5be;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(212, 140, 28, 0.4);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #f0a830;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(240, 168, 48, 0.55);
+        }
+        .info-list a {
+            color: #f2e8e4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ff3333;
+            text-shadow: 0 0 12px #ff3333;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #991111;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #f0a830;
+            text-shadow: 0 0 10px rgba(240, 168, 48, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(28, 7, 7, 0.95);
+            border: 2px solid #c91414;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(201, 20, 20, 0.4), inset 0 0 10px rgba(89, 6, 6, 0.3);
+        }
+        .dl-btn:hover {
+            background: #c91414;
+            color: #ffffff;
+            border-color: #f0a830;
+            box-shadow: 0 0 30px #e61e1e, 0 0 45px #d48c1c;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(20, 6, 6, 0.9);
+            border: 3px solid #991111;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(217, 22, 22, 0.18);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #991111;
+            padding-bottom: 15px;
+            color: #f0a830;
+            text-shadow: 0 0 10px rgba(240, 168, 48, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #991111;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #f0a830;
+            box-shadow: 0 0 30px #e61e1e;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #f0a830;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #991111;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(20, 6, 6, 0.9);
+            box-shadow: 0 0 12px rgba(153, 17, 17, 0.6);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #c91414; 
+            color: #ffffff; 
+            border-color: #f0a830;
+            box-shadow: 0 0 25px #e61e1e; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/gowcoo-symbol.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="pspru.html" class="back-btn">← Назад</a>
+
+        <img src="assets/gowb-logo.png" alt="God of War: Betrayal Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/gowb-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">God of War: Betrayal</h1>
+                
+                <p class="game-desc">Станьте новым Богом Войны в канонической главе саги о Кратосе — God of War: Betrayal, перенесенной прямо на железо PlayStation Portable с полной русской локализацией! События игры разворачиваются между Ghost of Sparta и God of War II: возглавляя спартанское войско в завоевательном походе по Греции, Призрак Спарты оказывается втянутым в коварный заговор после убийства великана Аргуса. Удобное нативное управление на кнопках PSP, зрелищные комбо Клинками Афины, сокрушительный Меч Олимпа, магия богов и сражения с мифическими чудовищами теперь доступны в карманном формате на русском языке.</p>
+
+                <ul class="info-list">
+                    <li><span>Модификация:</span> Нативный порт + Русская локализация</li>
+                    <li><span>Портирование и перевод:</span> <a href="https://akrggxd.T.ME" target="_blank">sklad.akrgooda</a></li>
+                    <li><span>Трейлер (YouTube):</span> <a href="https://youtu.be/4nbXW9DXg1A?si=szpmixjX1kLVaQ1n" target="_blank">Смотреть видео</a></li>
+                    <li><span>Наш Telegram канал:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Ссылки на загрузку</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/1JF9zR00nYiNqYP0TkzS2C2hNfRU2KafQ/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                        <a href="https://github.com/Akrgood/gow-betrayal-psp/releases/tag/ver1" target="_blank" class="dl-btn">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Скриншоты</h2>
+            <div class="screenshots-grid">
+                <img src="assets/gowbru-screen1.png" alt="Скриншот 1">
+                <img src="assets/gowbru-screen2.png" alt="Скриншот 2">
+                <img src="assets/gowbru-screen3.png" alt="Скриншот 3">
+                <img src="assets/gowbru-screen4.png" alt="Скриншот 4">
+                <img src="assets/gowbru-screen5.png" alt="Скриншот 5">
+                <img src="assets/gowbru-screen6.png" alt="Скриншот 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let embers = [];
+        let ashes = [];
+        let bladeArcs = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function drawBladeArc(a) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(a.x1, a.y1);
+            ctx.quadraticCurveTo(a.cx, a.cy, a.x2, a.y2);
+            ctx.strokeStyle = a.isGold ? `rgba(240, 168, 48, ${a.alpha})` : `rgba(230, 30, 30, ${a.alpha})`;
+            ctx.lineWidth = a.width;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 16;
+            ctx.shadowColor = a.isGold ? '#f0a830' : '#e61e1e';
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.16) {
+                embers.push({
+                    x: Math.random() * width,
+                    y: height + 20,
+                    size: 1.5 + Math.random() * 2.8,
+                    speedY: 1.2 + Math.random() * 1.9,
+                    speedX: (Math.random() - 0.5) * 1.1,
+                    alpha: 0.45 + Math.random() * 0.55,
+                    decay: 0.004 + Math.random() * 0.007,
+                    isGold: Math.random() < 0.35
+                });
+            }
+
+            for (let i = embers.length - 1; i >= 0; i--) {
+                let e = embers[i];
+                e.y -= e.speedY;
+                e.x += e.speedX + Math.sin(time * 2.2 + e.y * 0.015) * 0.7;
+                e.alpha -= e.decay;
+
+                if (e.alpha <= 0 || e.y < -20) {
+                    embers.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+                if (e.isGold) {
+                    ctx.fillStyle = `rgba(240, 168, 48, ${e.alpha})`;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#d48c1c';
+                } else {
+                    ctx.fillStyle = `rgba(230, 30, 30, ${e.alpha})`;
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = '#991111';
+                }
+                ctx.fill();
+                ctx.restore();
+            }
+
+            if (Math.random() < 0.12) {
+                ashes.push({
+                    x: Math.random() * (width + 80) - 40,
+                    y: -15,
+                    size: 1.2 + Math.random() * 2.2,
+                    speedY: 0.7 + Math.random() * 1.2,
+                    speedX: -0.4 + Math.random() * 0.5,
+                    alpha: 0.25 + Math.random() * 0.45,
+                    swayPhase: Math.random() * Math.PI * 2
+                });
+            }
+
+            for (let i = ashes.length - 1; i >= 0; i--) {
+                let ash = ashes[i];
+                ash.y += ash.speedY;
+                ash.x += ash.speedX + Math.sin(time * 1.5 + ash.swayPhase) * 0.6;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(ash.x, ash.y, ash.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(215, 205, 200, ${ash.alpha})`;
+                ctx.shadowBlur = 4;
+                ctx.shadowColor = '#8c7f7a';
+                ctx.fill();
+                ctx.restore();
+
+                if (ash.y > height + 20 || ash.x < -50 || ash.x > width + 50) {
+                    ashes.splice(i, 1);
+                }
+            }
+
+            if (Math.random() < 0.018) {
+                let sx = width * (0.15 + Math.random() * 0.7);
+                let sy = height * (0.35 + Math.random() * 0.4);
+                let ex = sx + (Math.random() - 0.5) * 260;
+                let ey = sy + (Math.random() - 0.5) * 180;
+                bladeArcs.push({
+                    x1: sx,
+                    y1: sy,
+                    cx: (sx + ex) / 2 + (Math.random() - 0.5) * 120,
+                    cy: (sy + ey) / 2 - 40 - Math.random() * 60,
+                    x2: ex,
+                    y2: ey,
+                    alpha: 0.75,
+                    width: 2.2,
+                    isGold: Math.random() < 0.4
+                });
+            }
+
+            for (let i = bladeArcs.length - 1; i >= 0; i--) {
+                let a = bladeArcs[i];
+                drawBladeArc(a);
+                a.alpha -= 0.035;
+                if (a.alpha <= 0) {
+                    bladeArcs.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(90, 10, 10, 0)', 'rgba(153, 17, 17, 0.35)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(200, 110, 20, 0)', 'rgba(230, 157, 36, 0.2)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#e61e1e';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#f0a830';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
