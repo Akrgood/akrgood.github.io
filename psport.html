@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d0a02">
+    
+    <title>PSPORT - Порти ігор для PSP</title>
+    
+    <meta name="description" content="Офіційний хаб проєкту PSPORT від sklad.akrgooda. Каталог нативних та хоумбрю-портів ігор з інших платформ для консолі PlayStation Portable (PSP).">
+    <meta name="keywords" content="PSPORT, akrgood, sklad.akrgooda, порти ігор для psp, портування на psp, homebrew psp, psp ports, resident evil 4 psp">
+    <meta name="author" content="akrgood">
+    <link rel="canonical" href="https://akrgood.github.io/psport.html">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "PSPORT",
+      "alternateName": "Порти ігор для PSP",
+      "url": "https://akrgood.github.io/psport.html",
+      "description": "Каталог портів відеоігор для консолі PlayStation Portable (PSP).",
+      "creator": {
+        "@type": "Person",
+        "name": "akrgood",
+        "url": "https://akrgood.github.io"
+      }
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0d0a02; font-family: 'Arial', sans-serif;
+            color: #fff8dc; overflow-x: hidden;
+        }
+
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 30px 20px;
+        }
+
+        .header-title {
+            font-size: 3.5em; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 8px; margin-bottom: 40px; margin-top: 20px;
+            background: linear-gradient(to bottom, #fff9cc 0%, #ffd700 50%, #b38600 51%, #ffe866 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.45));
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 50px;
+        }
+
+        .grid-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            background: rgba(32, 26, 8, 0.65);
+            border: 2px solid #665200;
+            border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            text-decoration: none; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.06);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .grid-item::before {
+            content: '✖';
+            position: absolute;
+            font-size: 3em;
+            color: #4d3e00;
+            z-index: 0;
+            transition: color 0.3s ease;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: #ffd700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+            z-index: 2;
+        }
+        .grid-item:hover::before {
+            color: #cca300;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #cca300;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 1px solid #665200;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(20, 16, 4, 0.65);
+            transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .back-btn:hover {
+            color: #ffd700;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.35);
+        }
+
+        .footer {
+            margin-top: auto;
+            padding-top: 30px;
+            font-size: 1.1em;
+            color: #998226;
+            letter-spacing: 2px;
+            font-family: monospace;
+        }
+
+        @media (max-width: 992px) {
+            .grid-container { grid-template-columns: repeat(4, 1fr); } 
+            .header-title { font-size: 2.8em; }
+        }
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: repeat(3, 1fr); gap: 15px;} 
+            .header-title { font-size: 2.2em; }
+            .back-btn { position: relative; top: 0; left: 0; margin-bottom: 20px; }
+        }
+        @media (max-width: 480px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px;} 
+            .header-title { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="content-wrapper">
+        
+        <a href="index.html" class="back-btn">← Назад</a>
+        
+        <div class="header-title">PSPORT</div>
+
+        <div class="grid-container">
+            <!-- Перший ряд: завантажується одразу з асинхронним декодируванням -->
+            <a href="re4m.html" class="grid-item">
+                <img src="assets/re4m-cover-pspua.png" alt="Resident Evil 4 Mobile Edition" decoding="async">
+            </a>
+
+            <a href="re4z.html" class="grid-item">
+                <img src="assets/re4z-cover-psport.png" alt="Resident Evil 4 Zeebo" decoding="async">
+            </a>
+
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+
+            <!-- Наступні ряди: слоти під нові порти -->
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+            <a href="#" class="grid-item"></a>
+        </div>
+
+        <div class="footer">
+            (sklad.akrgooda 2026)
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        
+        let width = 0;
+        let height = 0;
+        let time = 0;
+        let lastTime = performance.now();
+        let animationFrameId = null;
+
+        let bgGradient, wave1Gradient, wave2Gradient;
+        let wave1Y, wave2Y, neonWaveY;
+
+        function updateGradients() {
+            bgGradient = ctx.createLinearGradient(0, 0, 0, height);
+            bgGradient.addColorStop(0, '#211a04'); 
+            bgGradient.addColorStop(1, '#080601');
+
+            wave1Y = height * 0.65;
+            wave1Gradient = ctx.createLinearGradient(0, wave1Y - 240, 0, wave1Y + 240);
+            wave1Gradient.addColorStop(0, 'rgba(204, 163, 0, 0)');
+            wave1Gradient.addColorStop(0.5, 'rgba(255, 204, 0, 0.10)');
+            wave1Gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            wave2Y = height * 0.60;
+            wave2Gradient = ctx.createLinearGradient(0, wave2Y - 180, 0, wave2Y + 180);
+            wave2Gradient.addColorStop(0, 'rgba(255, 230, 50, 0.04)');
+            wave2Gradient.addColorStop(0.5, 'rgba(255, 215, 0, 0.18)');
+            wave2Gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            neonWaveY = height * 0.55;
+        }
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            updateGradients();
+        }
+
+        window.addEventListener('resize', resize, { passive: true });
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, fillStyle) {
+            ctx.beginPath();
+            const endX = width + 20;
+            for (let x = 0; x <= endX; x += 10) {
+                const noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                const y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100);
+            ctx.lineTo(0, height + 100);
+            ctx.closePath();
+            ctx.fillStyle = fillStyle;
+            ctx.fill();
+        }
+
+        function render(now) {
+            const delta = Math.min((now - lastTime) / 16.6667, 3);
+            lastTime = now;
+            time += 0.005 * delta;
+
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, width, height);
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, wave1Gradient);
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, wave2Gradient);
+
+            ctx.beginPath();
+            const endX = width + 20;
+            for (let x = 0; x <= endX; x += 10) {
+                const noise = Math.sin(x * 0.003 + time * 1.8) * 8;
+                const y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.65)';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 16;
+            ctx.shadowColor = 'rgba(255, 200, 0, 0.75)';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            animationFrameId = requestAnimationFrame(render);
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            } else {
+                lastTime = performance.now();
+                if (!animationFrameId) {
+                    animationFrameId = requestAnimationFrame(render);
+                }
+            }
+        });
+
+        animationFrameId = requestAnimationFrame(render);
+    </script>
+</body>
+</html>
