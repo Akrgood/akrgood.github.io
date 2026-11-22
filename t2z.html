@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekken 2: Zeebo Edition - PSPORT</title>
+    
+    <meta name="description" content="Download Tekken 2: Zeebo Edition for PSP. A native port of the rare Zeebo console fighting game by sklad.akrgooda for PSPORT.">
+    <meta name="keywords" content="Tekken 2 Zeebo Edition PSP, Tekken 2 PSP port, Kazuya Mishima, Heihachi Mishima, sklad.akrgooda, PSPORT, PSP_UA, psp homebrew ports, fighting game psp">
+    <meta name="author" content="sklad.akrgooda">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Tekken 2: Zeebo Edition",
+      "operatingSystem": "PlayStation Portable",
+      "genre": "Fighting, Arcade",
+      "inLanguage": "en",
+      "author": {
+        "@type": "Person",
+        "name": "sklad.akrgooda"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PSPORT"
+      },
+      "description": "Native port of Tekken 2: Zeebo Edition from the Zeebo console to PlayStation Portable by sklad.akrgooda."
+    }
+    </script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #090302; font-family: 'Arial', sans-serif;
+            color: #f2e6dc; overflow-x: hidden;
+        }
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #090302;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .preloader-icon {
+            width: 150px;
+            height: auto;
+            animation: pulse 1.4s infinite ease-in-out;
+            filter: drop-shadow(0 0 25px #ff6a00);
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #b32400); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 35px #ff8800) drop-shadow(0 0 45px #ffcc33); }
+            100% { transform: scale(0.92); opacity: 0.7; filter: drop-shadow(0 0 15px #b32400); }
+        }
+        #psp-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none;
+        }
+        .page-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; width: 100%; box-sizing: border-box;
+            padding: 40px 20px;
+        }
+        .game-logo {
+            max-width: 480px; 
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 24px rgba(255, 115, 0, 0.75)) drop-shadow(0 0 35px rgba(0, 0, 0, 0.9));
+        }
+        .content-panel {
+            display: flex;
+            background: rgba(24, 9, 4, 0.9);
+            border: 3px solid #cc4400;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(255, 120, 0, 0.18);
+            backdrop-filter: blur(8px);
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .cover-box {
+            flex: 0 0 300px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-cover {
+            width: 100%;
+            border-radius: 8px;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 0 25px rgba(255, 123, 0, 0.5);
+        }
+        .info-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-title {
+            font-size: 2.3em;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ff991a;
+            text-shadow: 0 0 12px rgba(255, 153, 26, 0.8), 0 0 25px #801a00;
+        }
+        .game-desc {
+            font-size: 1.08em;
+            line-height: 1.65;
+            color: #e6d4c5;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            text-align: justify;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            font-size: 1.1em;
+        }
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 123, 0, 0.45);
+            padding-bottom: 8px;
+        }
+        .info-list li span {
+            color: #ff991a;
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(255, 153, 26, 0.6);
+        }
+        .info-list a {
+            color: #fff3e6;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .info-list a:hover {
+            color: #ffc24d;
+            text-shadow: 0 0 12px #ffc24d;
+        }
+        .download-section {
+            margin-top: auto;
+            border-top: 2px dashed #cc4400;
+            padding-top: 25px;
+            text-align: center;
+        }
+        .download-title {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff991a;
+            text-shadow: 0 0 10px rgba(255, 153, 26, 0.6);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .dl-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(36, 12, 4, 0.95);
+            border: 2px solid #ff7b00;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 123, 0, 0.4), inset 0 0 10px rgba(128, 34, 0, 0.3);
+        }
+        .dl-btn:hover {
+            background: #cc4400;
+            color: #ffffff;
+            border-color: #ffcc66;
+            box-shadow: 0 0 30px #ff991a, 0 0 50px #802200;
+            transform: translateY(-3px) scale(1.05);
+        }
+        .screenshots-panel {
+            background: rgba(24, 9, 4, 0.9);
+            border: 3px solid #cc4400;
+            border-radius: 14px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), inset 0 0 25px rgba(255, 120, 0, 0.18);
+            backdrop-filter: blur(8px);
+        }
+        .screenshots-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 2px dashed #cc4400;
+            padding-bottom: 15px;
+            color: #ff991a;
+            text-shadow: 0 0 10px rgba(255, 153, 26, 0.6);
+        }
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .screenshots-grid img {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #cc4400;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .screenshots-grid img:hover {
+            transform: scale(1.1);
+            border-color: #ff991a;
+            box-shadow: 0 0 30px #ff991a;
+            z-index: 2;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ff991a;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #cc4400;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: rgba(24, 9, 4, 0.9);
+            box-shadow: 0 0 12px rgba(204, 68, 0, 0.6);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { 
+            background: #cc4400; 
+            color: #ffffff; 
+            border-color: #ff991a;
+            box-shadow: 0 0 25px #ff991a; 
+        }
+        @media (max-width: 768px) {
+            .content-panel, .screenshots-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            .cover-box {
+                flex: none;
+                width: 80%;
+                max-width: 300px;
+            }
+            .game-title {
+                text-align: center;
+                font-size: 2em;
+            }
+            .back-btn {
+                position: relative;
+                top: 0; left: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="assets/zeebo.png" alt="" class="preloader-icon">
+    </div>
+
+    <canvas id="psp-canvas"></canvas>
+
+    <div class="page-wrapper">
+        
+        <a href="psport.html" class="back-btn">← Back</a>
+
+        <img src="assets/tekken2-logo.png" alt="Tekken 2: Zeebo Edition Logo" class="game-logo">
+
+        <div class="content-panel">
+            
+            <div class="cover-box">
+                <img src="assets/tekken2-cover.png" alt="Cover" class="game-cover">
+            </div>
+
+            <div class="info-box">
+                <h1 class="game-title">Tekken 2: Zeebo Edition</h1>
+                
+                <p class="game-desc">Enter The King of Iron Fist Tournament 2 in Tekken 2: Zeebo Edition, natively ported from the rare Zeebo console straight onto PlayStation Portable hardware! Built on the BREW and OpenGL ES 1.1 architecture, this unique edition brings the iconic 3D martial arts clash between Kazuya Mishima, Heihachi Mishima, Jun Kazama, Paul Phoenix, Nina Williams, and Yoshimitsu into a crisp handheld format. This native PSP port features full button and D-pad mapping for executing signature combos, throws, and reversals effortlessly, delivering smooth arcade action anywhere you go.</p>
+
+                <ul class="info-list">
+                    <li><span>Modification:</span> Native Zeebo Port for PSP</li>
+                    <li><span>PSP Port by:</span> <a href="https://akrggxd.T.ME" target="_blank">sklad.akrgooda</a></li>
+                    <li><span>Trailer (YouTube):</span> <a href="https://youtu.be/bJBte9FnLOw?si=aPO_HYrQ0kQ-vRJC" target="_blank">Watch video</a></li>
+                    <li><span>Our Telegram Channel:</span> <a href="https://psp_ua.T.ME" target="_blank">PSP_UA</a></li>
+                </ul>
+
+                <div class="download-section">
+                    <h2 class="download-title">Download Links</h2>
+                    <div class="download-buttons">
+                        <a href="https://drive.google.com/file/d/13VuE1wi_SiShSGrDXe6XrBIaVFbolfQC/view?usp=sharing" target="_blank" class="dl-btn">Google Drive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screenshots-panel">
+            <h2 class="screenshots-title">Screenshots</h2>
+            <div class="screenshots-grid">
+                <img src="assets/tekken2-screen1.png" alt="Screenshot 1">
+                <img src="assets/tekken2-screen2.png" alt="Screenshot 2">
+                <img src="assets/tekken2-screen3.png" alt="Screenshot 3">
+                <img src="assets/tekken2-screen4.png" alt="Screenshot 4">
+                <img src="assets/tekken2-screen5.png" alt="Screenshot 5">
+                <img src="assets/tekken2-screen6.png" alt="Screenshot 6">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(function() {
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 1500); 
+        });
+
+        const canvas = document.getElementById('psp-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, time = 0;
+        let sparks = [];
+        let shockwaves = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawPSPWave(yOffset, baseAmp, freq, speed, phaseOffset, primaryColor, secondaryColor) {
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * freq * 2 + time * speed * 1.5) * baseAmp * 0.3;
+                let y = yOffset + noise + Math.sin(x * freq + time * speed + phaseOffset) * baseAmp;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(width, height + 100); ctx.lineTo(0, height + 100); ctx.closePath();
+            let gradient = ctx.createLinearGradient(0, yOffset - baseAmp * 2, 0, yOffset + baseAmp * 2);
+            gradient.addColorStop(0, primaryColor); gradient.addColorStop(0.5, secondaryColor); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            ctx.fillStyle = gradient; ctx.fill();
+        }
+
+        function drawShockwave(sw) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(255, 160, 30, ${sw.alpha})`;
+            ctx.lineWidth = sw.lineWidth;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#ff6a00';
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (Math.random() < 0.18) {
+                sparks.push({
+                    x: Math.random() * width,
+                    y: height + 20,
+                    size: 1.5 + Math.random() * 2.8,
+                    speedY: 1.3 + Math.random() * 2.1,
+                    speedX: (Math.random() - 0.5) * 1.3,
+                    alpha: 0.45 + Math.random() * 0.55,
+                    decay: 0.004 + Math.random() * 0.007,
+                    isGold: Math.random() < 0.45
+                });
+            }
+
+            for (let i = sparks.length - 1; i >= 0; i--) {
+                let s = sparks[i];
+                s.y -= s.speedY;
+                s.x += s.speedX + Math.sin(time * 2.2 + s.y * 0.015) * 0.8;
+                s.alpha -= s.decay;
+
+                if (s.alpha <= 0 || s.y < -20) {
+                    sparks.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                if (s.isGold) {
+                    ctx.fillStyle = `rgba(255, 204, 51, ${s.alpha})`;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#ffaa00';
+                } else {
+                    ctx.fillStyle = `rgba(255, 85, 0, ${s.alpha})`;
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = '#cc3300';
+                }
+                ctx.fill();
+                ctx.restore();
+            }
+
+            if (Math.random() < 0.015) {
+                shockwaves.push({
+                    x: width * (0.2 + Math.random() * 0.6),
+                    y: height * (0.35 + Math.random() * 0.4),
+                    radius: 8,
+                    maxRadius: 90 + Math.random() * 90,
+                    speed: 2.2 + Math.random() * 1.5,
+                    alpha: 0.45,
+                    lineWidth: 2
+                });
+            }
+
+            for (let i = shockwaves.length - 1; i >= 0; i--) {
+                let sw = shockwaves[i];
+                drawShockwave(sw);
+                sw.radius += sw.speed;
+                sw.alpha -= 0.009;
+                if (sw.radius >= sw.maxRadius || sw.alpha <= 0) {
+                    shockwaves.splice(i, 1);
+                }
+            }
+
+            const wave1Y = height * 0.75;
+            const wave2Y = height * 0.70;
+            const neonWaveY = height * 0.65;
+
+            drawPSPWave(wave1Y, 120, 0.001, 0.7, 0, 'rgba(120, 30, 0, 0)', 'rgba(180, 45, 0, 0.35)');
+            drawPSPWave(wave2Y, 90, 0.0015, 1.1, 2, 'rgba(220, 100, 0, 0)', 'rgba(255, 140, 20, 0.22)');
+
+            ctx.beginPath();
+            for (let x = 0; x <= width + 20; x += 10) {
+                let noise = Math.sin(x * 0.003 + time * 1.8) * 40 * 0.2;
+                let y = neonWaveY + noise + Math.sin(x * 0.002 + time * 1.5 + 4) * 60;
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#ff991a';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff7b00';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            time += 0.005;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
